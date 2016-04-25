@@ -4,6 +4,7 @@ package ru.rsoft.configurator.backend.handlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.rsoft.configurator.core.dto.PlayerCreateDto;
@@ -121,11 +122,11 @@ public class PlayerHandler {
         );
     }
     private Player convert(PlayerCreateDto playerCreateDto) {
-//        User user = requireNotNull(userRepository.findOne(villageCreateDto.getUserId()));
         /**
          * Что будет, если user не объявлять как final?
-         */
+         **/
         User user = requireNotNull(userRepository.findOne(playerCreateDto.getUserId()));
+        //final User user = requireNotNull(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         if (user == null){user = (userRepository.findOne(1));}
         return new Player(

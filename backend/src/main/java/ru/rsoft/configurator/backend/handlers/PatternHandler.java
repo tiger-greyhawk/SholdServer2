@@ -1,6 +1,7 @@
 package ru.rsoft.configurator.backend.handlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.rsoft.configurator.core.dto.PatternDto;
@@ -77,6 +78,8 @@ public class PatternHandler {
     }
     private Pattern convert(PatternCreateDto patternCreateDto) {
         final Player player = requireNotNull(playerRepository.findOne(patternCreateDto.getPlayerId()));
+        //final Player player = requireNotNull(playerRepository.findOne(patternCreateDto.getPlayerId()));
+        //final Player player = requireNotNull(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         return new Pattern(
                 patternCreateDto.getName(),
