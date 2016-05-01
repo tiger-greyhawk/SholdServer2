@@ -3,6 +3,7 @@ package ru.rsoft.configurator.core.entity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Admin on 26.11.2015.
@@ -23,6 +24,13 @@ public class Player {
     @Column(name = "NICK", unique = true, nullable = false)
     @Nonnull
     private String nick;
+
+    @ManyToMany
+    @JoinTable( name="PLAYER_FRIENDS",
+            joinColumns = @JoinColumn(name="player_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name="friends_id", referencedColumnName="id")
+    )
+    private Set<Friends> friends;
 
     public Player() {
         this(new User("", ""), "");
@@ -54,12 +62,20 @@ public class Player {
         this.nick = nick;
     }
 
+    public Set<Friends> getFriends(){
+        return friends;
+    }
+    public void setFriends(Set<Friends> friends) {
+        this.friends = friends;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
                 "id=" + id +
                 ", user=" + user +
-                ", nick='" + nick + '\'' +
+                ", nick='" + nick +
+                ", friends='" + friends + '\'' +
                 '}';
     }
 }

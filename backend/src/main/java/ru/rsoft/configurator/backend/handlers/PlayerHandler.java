@@ -54,29 +54,6 @@ public class PlayerHandler {
 
     public List<Village> villages = new ArrayList<Village>();
 
-    @Path("/villages")
-    @GET
-    public List<Village> getVillages(){
-//        villages.addAll(villageRepository.findAll().stream().map(VillageHandler -> new Village(villageRepository.findOne(1).getPlayer(), villageRepository.findOne(1).getName(),villageRepository.findOne(1).getIdInWorld())).collect(Collectors.toList()));
-        villages.addAll(villageRepository.findAll().stream().map(VillageHandler -> villageRepository.findOne(1)).collect(Collectors.toList()));
-
-        return Collections.unmodifiableList(villages);
-/*
-        Village village = new Village();
-                //village.setId(1);
-        village.setName("234");
-        village.setPlayer(new Player());
-        village.setIdInWorld(123);
-        return village;
-
-*/
-//        return villageRepository.findByPlayerId(1).stream().map()
-//                .collect(Collectors.toList());
-
-
-    }
-
-
     @Path("/{id}")
     @GET
     public PlayerDto get(@PathParam("id") Integer id) {

@@ -56,7 +56,7 @@ public class Resources {
 
 
 
-    public Resources() {
+    private Resources() {
         java.util.Date today = new java.util.Date();
         this.type = "resources";
         this.name = "nothing";

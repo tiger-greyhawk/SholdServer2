@@ -16,6 +16,7 @@ import ru.rsoft.configurator.core.repository.VillageRepository;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -68,6 +69,31 @@ public class VillageHandler {
     @POST
     public VillageDto add(@RequestBody VillageCreateDto villageCreateDto) {
         return convert(villageRepository.save(convert(villageCreateDto)));
+    }
+
+    @Path("/player/{id}")
+    @GET
+    public List<VillageDto> getByPlayerId(@PathParam("id") int playerID) {
+        final Set<Village> villages = villageRepository.findByPlayerId(playerID);
+        final List<VillageDto> result = new ArrayList<>(villages.size());
+        for (final Village village : villages) {
+            final VillageDto villageDto = convert(village);
+            result.add(villageDto);
+        }
+        return result;
+
+/*
+        final List<VillageDto> result = new ArrayList<>();
+        for (final Village village : villageRepository.findByPlayerId(playerID)) {
+            result.add(convert(village));
+        }
+        return result;
+*/
+/*
+        return villageRepository.findByPlayerId(playerID).parallelStream()
+            .map(this::convert)
+            .collect(Collectors.toList());
+*/
     }
 
     private <T> T requireNotNull(T object) {
