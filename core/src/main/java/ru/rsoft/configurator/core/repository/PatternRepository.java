@@ -11,6 +11,7 @@ import java.util.Set;
 
 public interface PatternRepository extends JpaRepository<Pattern, Integer> {
     Set<Pattern> findByPlayerId(int playerId);
+    //Set<Pattern> findOne(int id);
 //    Set<User> getId();
 
 }

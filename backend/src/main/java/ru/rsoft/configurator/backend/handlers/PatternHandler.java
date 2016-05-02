@@ -29,9 +29,11 @@ public class PatternHandler {
 
     private final PatternService patternService;
 
+
     @Autowired
     public PatternHandler(PatternService patternService) {
         this.patternService = patternService;
+
     }
 
     @Path("/")

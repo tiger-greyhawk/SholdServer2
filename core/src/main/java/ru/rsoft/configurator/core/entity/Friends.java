@@ -1,6 +1,9 @@
 package ru.rsoft.configurator.core.entity;
 
+//import org.hibernate.annotations.LazyToOne;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,12 +17,13 @@ public class Friends {
     @Column(name = "ID")
     @GeneratedValue
     private int id;
-/*
-    @ManyToOne
-    @JoinColumn (name = "PLAYER_ID", nullable = false)
+
+//    @ManyToOne
+//    @Join
+    @Column (name = "PLAYER_ID", nullable = false)
     @Nonnull
-    private Player player;
-*/
+    private int playerId;
+
 /*
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "players")
     private Set<Player> players;
@@ -37,15 +41,15 @@ public class Friends {
     @Nonnull
     private Player friend;
 
-    @Column (name = "COMMENT", nullable = false)
-    @Nonnull
+    @Column (name = "COMMENT", nullable = true)
+    @Nullable
     private String comment;
 
-    private Friends() { this(null,null,"");
+    private Friends() { this(0,null,"");
     }
 
-    public Friends(@Nonnull Set<Player> player, @Nonnull Player friend, @Nonnull String comment) {
-//        this.players = (Set<Player>) player;
+    public Friends(@Nonnull int playerId, @Nonnull Player friend, @Nonnull String comment) {
+        this.playerId = playerId;
         this.friend = friend;
         this.comment = comment;
     }
@@ -57,16 +61,16 @@ public class Friends {
     public void setId(int id) {
         this.id = id;
     }
-/*
+
     @Nonnull
-    public Player getPlayer() {
-        return player;
+    public int getPlayerId() {
+        return playerId;
     }
 
-    public void setPlayer(@Nonnull Player player) {
-        this.player = player;
+    public void setPlayerId(@Nonnull int playerId) {
+        this.playerId = playerId;
     }
-*/
+
     @Nonnull
     public Player getFriend() {
         return friend;
@@ -89,7 +93,7 @@ public class Friends {
     public String toString() {
         return "Friends{" +
                 "id=" + id +
-//                ", players=" + players +
+                ", playerId=" + playerId +
                 ", friend=" + friend +
                 ", comment='" + comment + '\'' +
                 '}';

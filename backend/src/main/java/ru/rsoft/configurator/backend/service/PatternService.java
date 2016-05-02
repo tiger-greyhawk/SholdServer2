@@ -1,5 +1,6 @@
 package ru.rsoft.configurator.backend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.rsoft.configurator.core.dto.PatternCreateDto;
 import ru.rsoft.configurator.core.dto.PatternDto;
@@ -19,11 +20,7 @@ public class PatternService {
     private final PlayerRepository playerRepository;
     private final PatternRepository patternRepository;
 
-    private PatternService(){
-        this.playerRepository = null;
-        this.patternRepository = null;
-    }
-
+    @Autowired
     public PatternService(PlayerRepository playerRepository, PatternRepository patternRepository) {
         this.playerRepository = playerRepository;
         this.patternRepository = patternRepository;
