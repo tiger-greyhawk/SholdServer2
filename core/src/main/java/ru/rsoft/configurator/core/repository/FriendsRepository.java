@@ -29,7 +29,9 @@ public interface FriendsRepository extends JpaRepository<Friends, Integer> {
 //    @Query(nativeQuery = true, value = "select * from FRIENDS where timestamp between :startDate and :endDate")
 //    Set<Friends> findFriends(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 //    @Query(nativeQuery = true, value = "select p.* from (PLAYERS f left join FRIENDS on FRIENDS.FRIEND_ID = f.id) join PLAYERS p on FRIENDS.PLAYER_ID = :id")
-    @Query(nativeQuery = true, value = "select f.* from (PLAYERS f left join FRIENDS pf on f.id = pf.FRIEND_ID) join PLAYERS p on pf.PLAYER_ID = :id")
 //    @Query(nativeQuery = true, value = "select * from PLAYERS, FRIENDS where FRIENDS.ID = :id")
-    List<Player> findByPlayerId(@Param("id") int id);
+//    @Query(nativeQuery = true, value = "select f.* from (PLAYERS f left join FRIENDS pf on f.id = pf.FRIEND_ID) join PLAYERS p on pf.PLAYER_ID = :id")
+    //@Query(nativeQuery = true, value = "select FRIENDS.* from PLAYERS, FRIENDS WHERE FRIENDS.FRIEND_ID = PLAYERS.id AND  FRIENDS.PLAYER_ID = :id")
+    @Query(nativeQuery = true, value = "select FRIENDS.* from PLAYERS, FRIENDS WHERE FRIENDS.FRIEND_ID = PLAYERS.id AND FRIENDS.PLAYER_ID = :id")
+    List<Friends> findByPlayerId(@Param("id") int id);
 }

@@ -17,14 +17,15 @@ public class FriendsCreateDto {
     private final int playerId;
 
     @Nonnull
-    private final Player friend;
+    private final int friendId;
 
     @Nullable
     private final String comment;
 
-    public FriendsCreateDto(@Nonnull int playerId, @Nonnull Player friend, String comment) {
+    public FriendsCreateDto(@Nonnull int playerId, @Nullable int friendId, @Nullable String comment) {
+//    public FriendsCreateDto(@Nonnull int playerId, @Nullable String comment) {
         this.playerId = playerId;
-        this.friend = friend;
+        this.friendId = friendId;
         this.comment = comment;
     }
 
@@ -33,9 +34,9 @@ public class FriendsCreateDto {
         return playerId;
     }
 
-    @Nonnull
-    public Player getFriend() {
-        return friend;
+    @Nullable
+    public int getFriendId() {
+        return friendId;
     }
 
     @Nullable
@@ -47,7 +48,7 @@ public class FriendsCreateDto {
     public String toString() {
         return "FriendsCreateDto{" +
                 "playerId=" + playerId +
-                ", friend=" + friend +
+                ", friendId=" + friendId +
                 ", comment='" + comment + '\'' +
                 '}';
     }

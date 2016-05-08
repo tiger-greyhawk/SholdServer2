@@ -39,7 +39,19 @@ public class PatternHandler {
     @Path("/")
     @GET
     public List<PatternDto> list() {
-        return patternService.findAll();
+        return patternService.findPlayerId();
+    }
+
+    @Path("/myList")
+    @GET
+    public List<PatternDto> listWithoutFiles() {
+        return patternService.findPlayerIdWithoutFiles();
+    }
+
+    @Path("/friends")
+    @GET
+    public List<PatternDto> list1() {
+        return patternService.findByFriend();
     }
 
     @Path("/{id}")

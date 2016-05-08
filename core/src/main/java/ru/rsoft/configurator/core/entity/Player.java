@@ -3,6 +3,7 @@ package ru.rsoft.configurator.core.entity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,12 +26,12 @@ public class Player {
     @Nonnull
     private String nick;
 
-    @ManyToMany
+    @OneToMany
     @JoinTable( name="PLAYER_FRIENDS",
             joinColumns = @JoinColumn(name="player_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name="friends_id", referencedColumnName="id")
     )
-    private Set<Friends> friends;
+    private List<Friends> friends;
 
     public Player() {
         this(new User("", ""), "");
@@ -38,6 +39,7 @@ public class Player {
     public Player(@Nonnull User user,@Nullable String nick) {
         this.user = user;
         this.nick = nick;
+//        this.friends = friends;
     }
 
     public Integer getId() {
@@ -61,21 +63,21 @@ public class Player {
     public void setNick(@Nonnull String nick) {
         this.nick = nick;
     }
-
-    public Set<Friends> getFriends(){
+/*
+    public List<Friends> getFriends(){
         return friends;
     }
-    public void setFriends(Set<Friends> friends) {
+    public void setFriends(List<Friends> friends) {
         this.friends = friends;
     }
-
+*/
     @Override
     public String toString() {
         return "Player{" +
                 "id=" + id +
                 ", user=" + user +
                 ", nick='" + nick +
-                ", friends='" + friends + '\'' +
+//                ", friends='" + friends + '\'' +
                 '}';
     }
 }

@@ -19,15 +19,19 @@ public class FriendsDto {
 //    private final int playerId;
 
     @Nonnull
-    private final Player friend;
+    private final int playerId;
+
+    @Nullable
+    private final int friendId;
 
     @Nullable
     private final String comment;
 
-    public FriendsDto(int id, @Nonnull Player friend, @Nullable String comment) {
+    public FriendsDto(int id, @Nonnull int playerId, @Nullable int friendId, @Nullable String comment) {
+//    public FriendsDto(int id, @Nonnull int playerId, @Nullable String comment) {
         this.id = id;
-//        this.playerId = playerId;
-        this.friend = friend;
+        this.playerId = playerId;
+        this.friendId = friendId;
         this.comment = comment;
     }
 
@@ -42,15 +46,15 @@ public class FriendsDto {
     public int getId() {
         return id;
     }
-/*
+
     @Nonnull
     public int getPlayerId() {
         return playerId;
     }
-*/
+
     @Nonnull
-    public Player getFriend() {
-        return friend;
+    public int getFriendId() {
+        return friendId;
     }
 
     @Nullable
@@ -62,8 +66,8 @@ public class FriendsDto {
     public String toString() {
         return "FriendsDto{" +
                 "id=" + id +
-//                ", playerId=" + playerId +
-                ", friend=" + friend +
+                ", playerId=" + playerId +
+                ", friendId=" + friendId +
                 ", comment='" + comment + '\'' +
                 '}';
     }

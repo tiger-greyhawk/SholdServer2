@@ -5,12 +5,10 @@ package ru.rsoft.configurator.backend.handlers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.rsoft.configurator.core.dto.PlayerCreateDto;
-import ru.rsoft.configurator.core.dto.PlayerDto;
-import ru.rsoft.configurator.core.dto.VillageCreateDto;
-import ru.rsoft.configurator.core.dto.VillageDto;
+import ru.rsoft.configurator.core.dto.*;
 import ru.rsoft.configurator.core.entity.Player;
 import ru.rsoft.configurator.core.entity.User;
 import ru.rsoft.configurator.core.entity.Village;
@@ -60,6 +58,17 @@ public class PlayerHandler {
         return convert(requireNotNull(playerRepository.findOne(id)));
     }
 
+    @Path("/me")
+    @GET
+    public PlayerDto getMe() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        List<PatternDto> temp = new ArrayList<PatternDto>();
+
+        String username = ((UserDetails)principal).getUsername();
+        int playerId = playerRepository.findByNick(username).getId();
+        return convert(requireNotNull(playerRepository.findOne(playerId)));
+    }
+
     @Path("/")
     @POST
     public PlayerDto add(@RequestBody PlayerCreateDto playerCreateDto) {
@@ -95,6 +104,7 @@ public class PlayerHandler {
 
 //                village.getBody() == null ? null : village.getBody().getId(),
                 player.getNick()
+//                player.getFriends()
 
         );
     }
@@ -109,6 +119,7 @@ public class PlayerHandler {
         return new Player(
                 user,
                 playerCreateDto.getNick()
+//                playerCreateDto.getFriends()
 
         );
     }

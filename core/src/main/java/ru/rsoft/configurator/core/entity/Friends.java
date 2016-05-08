@@ -36,21 +36,28 @@ public class Friends {
         this.players = players;
     }
 */
+/*
     @ManyToOne
-    @JoinColumn (name = "FRIEND_ID", nullable = false)
-    @Nonnull
-    private Player friend;
+    @JoinTable ( name="PLAYER_FRIENDS",
+            joinColumns = @JoinColumn(name="friends_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name="player_id", referencedColumnName="id")
+    )
+*/
+    @Column (name = "FRIEND_ID", nullable = true)
+    @Nullable
+    private int friendId;
 
     @Column (name = "COMMENT", nullable = true)
     @Nullable
     private String comment;
 
-    private Friends() { this(0,null,"");
+    private Friends() { this(0, 0,"");
     }
 
-    public Friends(@Nonnull int playerId, @Nonnull Player friend, @Nonnull String comment) {
+    public Friends(@Nonnull int playerId, @Nonnull int friendId, @Nonnull String comment) {
+//    public Friends(@Nonnull int playerId, @Nonnull String comment) {
         this.playerId = playerId;
-        this.friend = friend;
+//        this.friendId = friendId;
         this.comment = comment;
     }
 
@@ -72,12 +79,12 @@ public class Friends {
     }
 
     @Nonnull
-    public Player getFriend() {
-        return friend;
+    public int getFriendId() {
+        return friendId;
     }
 
-    public void setFriend(@Nonnull Player friend) {
-        this.friend = friend;
+    public void setFriendId(@Nonnull int friendId) {
+        this.friendId = friendId;
     }
 
     @Nonnull
@@ -94,7 +101,7 @@ public class Friends {
         return "Friends{" +
                 "id=" + id +
                 ", playerId=" + playerId +
-                ", friend=" + friend +
+                ", friendId=" + friendId +
                 ", comment='" + comment + '\'' +
                 '}';
     }

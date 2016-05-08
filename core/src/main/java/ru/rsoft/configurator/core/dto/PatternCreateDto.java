@@ -1,16 +1,23 @@
 package ru.rsoft.configurator.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import ru.rsoft.configurator.core.entity.Player;
+import ru.rsoft.configurator.core.repository.PlayerRepository;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Admin on 16.04.2016.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PatternCreateDto {
+
     @Nonnull
     private final String name;
 
@@ -30,21 +37,28 @@ public class PatternCreateDto {
     private final int playerId;
 
     @Nonnull
+    private final String typeCastle;
+
+    @Nonnull
     private final int accessFrom;
 
     public PatternCreateDto() {
-        this("", "", "", "", "", 0, 1000);
+        this("", "", "", "", "", 0, "", 1000);
     }
 
-    public PatternCreateDto(@Nonnull String name, @Nonnull String fileName, @Nonnull String file, @Nonnull String photoName, @Nonnull String photo, @Nonnull int playerId, @Nonnull int accessFrom) {
+
+    public PatternCreateDto(@Nonnull String name, @Nonnull String fileName, @Nonnull String file, @Nonnull String photoName, @Nonnull String photo, @Nonnull int playerId, String typeCastle, @Nonnull int accessFrom) {
         this.name = name;
         this.fileName = fileName;
         this.file = file;
         this.photoName = photoName;
         this.photo = photo;
         this.playerId = playerId;
+        this.typeCastle = typeCastle;
         this.accessFrom = accessFrom;
     }
+
+
 
     @Nonnull
     public String getName() {
@@ -73,7 +87,13 @@ public class PatternCreateDto {
 
     @Nonnull
     public int getPlayerId() {
+
         return playerId;
+    }
+
+    @Nonnull
+    public String getTypeCastle() {
+        return typeCastle;
     }
 
     @Nonnull
@@ -89,7 +109,8 @@ public class PatternCreateDto {
                 ", file='" + file + '\'' +
                 ", photoName='" + photoName + '\'' +
                 ", photo='" + photo + '\'' +
-                ", playerId=" + playerId +
+                ", playerId=" + playerId + '\'' +
+                ", typeCastle='" + typeCastle + '\'' +
                 ", accessFrom=" + accessFrom +
                 '}';
     }

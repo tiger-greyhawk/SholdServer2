@@ -33,7 +33,7 @@ public class FriendsHandler {
 
     @Path("/{id}")
     @GET
-    public List<PlayerDto> get(@PathParam("id") int id) {
+    public List<FriendsDto> get(@PathParam("id") int id) {
         return friendsService.findByPlayerId(id);
     }
 }

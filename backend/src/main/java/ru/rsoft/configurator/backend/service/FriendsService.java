@@ -39,8 +39,8 @@ public class FriendsService {
         return convert(friendsRepository.save(convert(friendsCreateDto)));
     }
 
-    public List<PlayerDto> findByPlayerId(int id) {
-        return playerRepository.findFriends(id).stream().map(this::convert)
+    public List<FriendsDto> findByPlayerId(int id) {
+        return friendsRepository.findByPlayerId(id).stream().map(this::convert)
                 .collect(Collectors.toList());
         //return convert(requireNotNull(friendsRepository.findOne(id)));
     }
@@ -54,6 +54,7 @@ public class FriendsService {
 
 //                village.getBody() == null ? null : village.getBody().getId(),
                 player.getNick()
+//                player.getFriends()
 
         );
     }
@@ -61,8 +62,8 @@ public class FriendsService {
     private FriendsDto convert(Friends friends) {
         return new FriendsDto(
                 friends.getId(),
-//                friends.getPlayerId() == 0 ? 0 : friends.getPlayerId(),
-                friends.getFriend() == null ? null : friends.getFriend(),
+                friends.getPlayerId() == 0 ? 0 : friends.getPlayerId(),
+                friends.getFriendId() == 0 ? 0 : friends.getFriendId(),
                 friends.getComment()
 
         );
@@ -75,7 +76,7 @@ public class FriendsService {
 
         return new Friends(
                 friendsCreateDto.getPlayerId(),
-                friendsCreateDto.getFriend(),
+                friendsCreateDto.getFriendId(),
                 friendsCreateDto.getComment()
 
         );

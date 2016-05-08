@@ -35,13 +35,20 @@ public class PatternDto {
     private final int playerId;
 
     @Nonnull
+    private final String typeCastle;
+
+    @Nonnull
     private final int accessFrom;
 
     private PatternDto() {
-        this(1, "", "", "", "", "", 0, 1000);
+        this(1, "", "", "", "", "", 0, "", 1000);
     }
 
-    public PatternDto(int id, @Nonnull String name, @Nonnull String fileName, @Nonnull String file, @Nonnull String photoName, @Nonnull String photo, @Nonnull int playerId, @Nonnull int accessFrom) {
+    public PatternDto(int id, String name, String typeCastle, int playerId) {
+        this(id, name, "", "", "", "", playerId, typeCastle, 1000);
+    }
+
+    public PatternDto(int id, @Nonnull String name, @Nonnull String fileName, @Nonnull String file, @Nonnull String photoName, @Nonnull String photo, @Nonnull int playerId, @Nonnull String typeCastle, @Nonnull int accessFrom) {
         this.id = id;
         this.name = name;
         this.fileName = fileName;
@@ -49,6 +56,7 @@ public class PatternDto {
         this.photoName = photoName;
         this.photo = photo;
         this.playerId = playerId;
+        this.typeCastle = typeCastle;
         this.accessFrom = accessFrom;
     }
 
@@ -87,6 +95,11 @@ public class PatternDto {
     }
 
     @Nonnull
+    public String getTypeCastle() {
+        return typeCastle;
+    }
+
+    @Nonnull
     public int getAccessFrom() {
         return accessFrom;
     }
@@ -100,7 +113,8 @@ public class PatternDto {
                 ", file='" + file + '\'' +
                 ", photoName='" + photoName + '\'' +
                 ", photo='" + photo + '\'' +
-                ", player=" + playerId +
+                ", player=" + playerId + '\'' +
+                ", typeCastle=" + typeCastle + '\'' +
                 ", accessFrom=" + accessFrom +
                 '}';
     }
