@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>shold-secure</artifactId>
-        <groupId>ru.rsoft.configurator</groupId>
+        <groupId>ru.rsoft.shold</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -21,7 +21,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>ru.rsoft.configurator</groupId>
+            <groupId>ru.rsoft.shold</groupId>
             <artifactId>core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>

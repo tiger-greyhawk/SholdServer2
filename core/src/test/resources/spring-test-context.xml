@@ -37,7 +37,7 @@
         <!-- список пакетов для поиска объектов JPA -->
         <property name="packagesToScan">
             <list>
-                <value>ru.rsoft.configurator.core</value>
+                <value>ru.rsoft.shold.core</value>
             </list>
         </property>
         <!-- JPA провайдер сохранялки -->
@@ -61,12 +61,12 @@
     </bean>
 
     <!-- Указания, где искать интерфейсы классов-репозиториев (папочка, где искать репозитории) -->
-    <jpa:repositories base-package="ru.rsoft.configurator.core" />
+    <jpa:repositories base-package="ru.rsoft.shold.core" />
     <!-- Указание, что транзакционность определяется аннотациями методов и классов
     (включение управлением транзакциями с помощью аннотаций) -->
     <tx:annotation-driven/>
     <!-- Указание, что созданные Spring'ом объекты могут быть переданы с помощью аннотаций
     и пакет, где, собственно, эти классы могут лежать (а то начнёт создавать всё подряд -
     никакой памяти не хватит) -->
-    <context:component-scan base-package="ru.rsoft.configurator"/>
+    <context:component-scan base-package="ru.rsoft.shold"/>
 </beans>

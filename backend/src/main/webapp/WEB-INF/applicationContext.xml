@@ -11,7 +11,7 @@
                 http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
     <!-- подключение JAX-RS сервера -->
-    <jaxrs:server basePackages="ru.rsoft.configurator.backend.handlers" address="/">
+    <jaxrs:server basePackages="ru.rsoft.shold.backend.handlers" address="/">
         <jaxrs:providers>
             <bean class="com.fasterxml.jackson.jaxrs.xml.JacksonXMLProvider" />
             <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
@@ -29,15 +29,19 @@
     </jaxrs:server>
 
     <!-- Встроенная база данных в памяти -->
-    <!-- <jdbc:embedded-database id="dataSource" type="HSQL"/> -->
+     <jdbc:embedded-database id="dataSource" type="HSQL">
+         <jdbc:script location="classpath:initial-data.sql"/>
+     </jdbc:embedded-database>
     <!-- ну или mysql база данных, не забудь закомментировать предыдущую: -->
 
+<!--
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://192.168.10.110:3306/test" />
         <property name="username" value="shk" />
         <property name="password" value="123qwe" />
     </bean>
+-->
 
 
     <!-- Объект класса, отвечающий за создание EntityManager'ов в репозиториях -->
@@ -47,7 +51,7 @@
         <!-- список пакетов для поиска объектов JPA -->
         <property name="packagesToScan">
             <list>
-                <value>ru.rsoft.configurator.core</value>
+                <value>ru.rsoft.shold.core</value>
             </list>
         </property>
         <!-- JPA провайдер сохранялки -->
@@ -76,12 +80,12 @@
     </bean>
 
     <!-- Указания, где искать интерфейсы классов-репозиториев (папочка, где искать репозитории) -->
-    <jpa:repositories base-package="ru.rsoft.configurator.core" />
+    <jpa:repositories base-package="ru.rsoft.shold.core" />
     <!-- Указание, что транзакционность определяется аннотациями методов и классов
     (включение управлением транзакциями с помощью аннотаций) -->
     <tx:annotation-driven/>
     <!-- Указание, что созданные Spring'ом объекты могут быть переданы с помощью аннотаций
     и пакет, где, собственно, эти классы могут лежать (а то начнёт создавать всё подряд -
     никакой памяти не хватит) -->
-    <context:component-scan base-package="ru.rsoft.configurator"/>
+    <context:component-scan base-package="ru.rsoft.shold"/>
 </beans>
