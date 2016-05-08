@@ -12,54 +12,44 @@ import javax.persistence.Id;
 public class PatternDto {
 
     @Id
-    private final int id;
+    private final Integer id;
+
+    @Nonnull
+    private final Integer playerId;
 
     @Nonnull
     private final String name;
 
     @Nonnull
-    private final String fileName;
-
-    @Nonnull
-    private final String file;
-
-    @Nonnull
-    private final String photoName;
-
-    @Nonnull
-    private final String photo;
-
-    @Nonnull
-    private final int playerId;
-
-    @Nonnull
     private final String typeCastle;
 
     @Nonnull
-    private final int accessFrom;
+    private final Integer accessFrom;
 
     private PatternDto() {
-        this(1, "", "", "", "", "", 0, "", 1000);
+        this(null, null, "", "", 0000);
     }
 
+/*
     public PatternDto(int id, String name, String typeCastle, int playerId) {
         this(id, name, "", "", "", "", playerId, typeCastle, 1000);
     }
-
-    public PatternDto(int id, @Nonnull String name, @Nonnull String fileName, @Nonnull String file, @Nonnull String photoName, @Nonnull String photo, @Nonnull int playerId, @Nonnull String typeCastle, @Nonnull int accessFrom) {
+*/
+    public PatternDto(Integer id, @Nonnull Integer playerId, @Nonnull String name, @Nonnull String typeCastle, @Nonnull int accessFrom) {
         this.id = id;
-        this.name = name;
-        this.fileName = fileName;
-        this.file = file;
-        this.photoName = photoName;
-        this.photo = photo;
         this.playerId = playerId;
+        this.name = name;
         this.typeCastle = typeCastle;
         this.accessFrom = accessFrom;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    @Nonnull
+    public Integer getPlayerId() {
+        return playerId;
     }
 
     @Nonnull
@@ -67,30 +57,6 @@ public class PatternDto {
         return name;
     }
 
-    @Nonnull
-    public String getFileName() {
-        return fileName;
-    }
-
-    @Nonnull
-    public String getFile() {
-        return file;
-    }
-
-    @Nonnull
-    public String getPhotoName() {
-        return photoName;
-    }
-
-    @Nonnull
-    public String getPhoto() {
-        return photo;
-    }
-
-    @Nonnull
-    public int getPlayerId() {
-        return playerId;
-    }
 
     @Nonnull
     public String getTypeCastle() {
@@ -106,13 +72,9 @@ public class PatternDto {
     public String toString() {
         return "PatternDto{" +
                 "id=" + id +
+                ", playerId=" + playerId +
                 ", name='" + name + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", file='" + file + '\'' +
-                ", photoName='" + photoName + '\'' +
-                ", photo='" + photo + '\'' +
-                ", player=" + playerId + '\'' +
-                ", typeCastle=" + typeCastle + '\'' +
+                ", typeCastle='" + typeCastle + '\'' +
                 ", accessFrom=" + accessFrom +
                 '}';
     }

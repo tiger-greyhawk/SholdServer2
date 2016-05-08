@@ -36,14 +36,14 @@ public class PatternService {
         this.friendsRepository = friendsRepository;
     }
 
-    public List<PatternDto> findPlayerId() {
+    public List<PatternDto> findByPlayerId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)principal).getUsername();
         int playerId = playerRepository.findByNick(username).getId();
         return patternRepository.findByPlayerId(playerId).stream().map(this::convert)
                 .collect(Collectors.toList());
     }
-
+/*
     public List<PatternDto> findPlayerIdWithoutFiles() {
         //    ******************  НАДО ВЕРНУТЬ СПИСОК шаблонов без файлов ********************************************************************      ////////
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -56,7 +56,7 @@ public class PatternService {
         List<PatternDto> temp2 = new ArrayList<PatternDto>();
 
         int playerId = player.getId();
-        temp1 = patternRepository.findByPlayerIdWithoutFiles(playerId);
+//        temp1 = patternRepository.findByPlayerIdWithoutFiles(playerId);
 //        temp1.forEach(
                 temp2.addAll(patternRepository.findByPlayerIdWithoutFiles(playerId).stream().map(this::convertMin).collect(Collectors.toList()));
 
@@ -68,7 +68,7 @@ public class PatternService {
 //        temp1 = new Pattern("","",player);
         return temp2;
     }
-
+*/
     public List<PatternDto> findByFriend() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<PatternDto> temp = new ArrayList<PatternDto>();
@@ -95,30 +95,24 @@ public class PatternService {
     private PatternDto convert(Pattern pattern) {
         return new PatternDto(
                 pattern.getId(),
-                pattern.getName(),
-                pattern.getFileName(),
-                pattern.getFile(),
-                pattern.getPhotoName(),
-                pattern.getPhoto(),
                 pattern.getPlayerId(),
+                pattern.getName(),
                 pattern.getTypeCastle(),
                 pattern.getAccessFrom()
 //                village.getIdInWorld()
         );
     }
-
+/*
     private PatternDto convertMin(Pattern pattern) {
         return new PatternDto(
                 pattern.getId(),
+                pattern.getPlayerId(),
                 pattern.getName(),
                 pattern.getTypeCastle(),
-                pattern.getPlayerId()
-
-
-//                village.getIdInWorld()
+                pattern.getAccessFrom()
         );
     }
-
+*/
     private Pattern convert(PatternCreateDto patternCreateDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<PatternDto> temp = new ArrayList<PatternDto>();
@@ -130,12 +124,9 @@ public class PatternService {
         //final Player player = requireNotNull(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         return new Pattern(
-                patternCreateDto.getName(),
-                patternCreateDto.getFileName(),
-                patternCreateDto.getFile(),
-                patternCreateDto.getPhotoName(),
-                patternCreateDto.getPhoto(),
+                null,
                 player.getId(),
+                patternCreateDto.getName(),
                 patternCreateDto.getTypeCastle(),
                 patternCreateDto.getAccessFrom()
 

@@ -15,7 +15,7 @@ import java.util.Set;
 public interface PatternRepository extends JpaRepository<Pattern, Integer> {
     Set<Pattern> findByPlayerId(int playerId);
 //    @Query(nativeQuery = true, value = "select PATTERNS.NAME, PATTERNS.TYPE_CASTLE, PATTERNS.PLAYER_ID from PATTERNS WHERE PATTERNS.PLAYER_ID = :playerId")
-    @Query(nativeQuery = true, value = "select PATTERNS.NAME, PATTERNS.PLAYER_ID from PATTERNS WHERE PATTERNS.PLAYER_ID = :playerId")
+    @Query(nativeQuery = true, value = "select * from PATTERNS WHERE PATTERNS.PLAYER_ID = :playerId")
     List<Pattern> findByPlayerIdWithoutFiles(@Param("playerId") int playerId);
     //Set<Pattern> findOne(int id);
 //    Set<User> getId();

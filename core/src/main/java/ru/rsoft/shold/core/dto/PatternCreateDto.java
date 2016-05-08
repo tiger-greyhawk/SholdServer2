@@ -11,76 +11,38 @@ import javax.annotation.Nonnull;
 public class PatternCreateDto {
 
     @Nonnull
+    private final Integer playerId;
+
+    @Nonnull
     private final String name;
-
-    @Nonnull
-    private final String fileName;
-
-    @Nonnull
-    private final String file;
-
-    @Nonnull
-    private final String photoName;
-
-    @Nonnull
-    private final String photo;
-
-    @Nonnull
-    private final int playerId;
 
     @Nonnull
     private final String typeCastle;
 
     @Nonnull
-    private final int accessFrom;
+    private final Integer accessFrom;
 
     public PatternCreateDto() {
-        this("", "", "", "", "", 0, "", 1000);
+        this(0, "", "", 0000);
     }
 
 
-    public PatternCreateDto(@Nonnull String name, @Nonnull String fileName, @Nonnull String file, @Nonnull String photoName, @Nonnull String photo, @Nonnull int playerId, String typeCastle, @Nonnull int accessFrom) {
+    public PatternCreateDto(@Nonnull int playerId, @Nonnull String name, String typeCastle, @Nonnull int accessFrom) {
         this.name = name;
-        this.fileName = fileName;
-        this.file = file;
-        this.photoName = photoName;
-        this.photo = photo;
         this.playerId = playerId;
         this.typeCastle = typeCastle;
         this.accessFrom = accessFrom;
     }
 
 
+    @Nonnull
+    public Integer getPlayerId() {
+        return playerId;
+    }
 
     @Nonnull
     public String getName() {
         return name;
-    }
-
-    @Nonnull
-    public String getFileName() {
-        return fileName;
-    }
-
-    @Nonnull
-    public String getFile() {
-        return file;
-    }
-
-    @Nonnull
-    public String getPhotoName() {
-        return photoName;
-    }
-
-    @Nonnull
-    public String getPhoto() {
-        return photo;
-    }
-
-    @Nonnull
-    public int getPlayerId() {
-
-        return playerId;
     }
 
     @Nonnull
@@ -96,12 +58,8 @@ public class PatternCreateDto {
     @Override
     public String toString() {
         return "PatternCreateDto{" +
-                "name='" + name + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", file='" + file + '\'' +
-                ", photoName='" + photoName + '\'' +
-                ", photo='" + photo + '\'' +
-                ", playerId=" + playerId + '\'' +
+                "playerId=" + playerId +
+                ", name='" + name + '\'' +
                 ", typeCastle='" + typeCastle + '\'' +
                 ", accessFrom=" + accessFrom +
                 '}';

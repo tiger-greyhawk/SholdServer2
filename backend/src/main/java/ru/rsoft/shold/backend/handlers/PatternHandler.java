@@ -32,15 +32,16 @@ public class PatternHandler {
     @Path("/")
     @GET
     public List<PatternDto> list() {
-        return patternService.findPlayerId();
+        return patternService.findByPlayerId();
     }
 
+/*
     @Path("/myList")
     @GET
     public List<PatternDto> listWithoutFiles() {
         return patternService.findPlayerIdWithoutFiles();
     }
-
+*/
     @Path("/friends")
     @GET
     public List<PatternDto> list1() {
@@ -57,6 +58,5 @@ public class PatternHandler {
     @POST
     public PatternDto add(@RequestBody PatternCreateDto patternCreateDto) {
         return patternService.add(patternCreateDto);
-
     }
 }

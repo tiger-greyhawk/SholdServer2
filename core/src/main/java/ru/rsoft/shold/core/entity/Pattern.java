@@ -13,33 +13,15 @@ public class Pattern {
     @Id
     @Column(name = "ID")
     @GeneratedValue
-    private int id;
-
-    @Column (name = "NAME", nullable = false)
-    @Nonnull
-    private String name;
-
-    @Column (name = "FILENAME", nullable = false)
-    @Nonnull
-    private String fileName;
-
-    @Lob
-    @Column (name = "FILE", nullable = false)
-    @Nonnull
-    private String file;
-
-    @Column (name = "PHOTONAME", nullable = false)
-    @Nonnull
-    private String photoName;
-
-    @Lob
-    @Column (name = "PHOTO", nullable = false)
-    @Nonnull
-    private String photo;
+    private Integer id;
 
     @Column (name = "PLAYER_ID", nullable = false)
     @Nonnull
     private Integer playerId;  //должно быть связано с игроком или пользователем - пока не решил.
+
+    @Column (name = "NAME", nullable = false)
+    @Nonnull
+    private String name;
 
     @Column (name = "TYPE_CASTLE", nullable = false)
     @Nonnull
@@ -49,9 +31,9 @@ public class Pattern {
     @Nonnull
     private int accessFrom; //доступ побитово 1-овнер, 2-группа, 3-друзья, 4-остальные
 
-    private Pattern() {this("", "", "", "", "", null, "", 1000);
+    private Pattern() {this(0, 0, "", "", 0000);
     }
-
+/*
     public Pattern(String name, String typeCastle, Integer playerId) {
         this.name = name;
 //        this.fileName = "nil";
@@ -63,61 +45,17 @@ public class Pattern {
         this.typeCastle = typeCastle;
 //        this.accessFrom = 0000;
     }
-
-    public Pattern(String name, String fileName, String file, String photoName, String photo, Integer playerId, String typeCastle, int accessFrom) {
-        this.name = name;
-        this.fileName = fileName;
-        this.file = file;
-        this.photoName = photoName;
-        this.photo = photo;
+*/
+    public Pattern(Integer id, Integer playerId, String name, String typeCastle, int accessFrom) {
+        this.id = id;
         this.playerId = playerId;
+        this.name = name;
         this.typeCastle = typeCastle;
         this.accessFrom = accessFrom;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    @Nonnull
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@Nonnull String name) {
-        this.name = name;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public String getPhotoName() {
-        return photoName;
-    }
-
-    public void setPhotoName(String photoName) {
-        this.photoName = photoName;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
     }
 
     @Nonnull
@@ -126,12 +64,13 @@ public class Pattern {
     }
 
     @Nonnull
-    public String getTypeCastle() {
-        return typeCastle;
+    public String getName() {
+        return name;
     }
 
-    public void setTypeCastle(@Nonnull String typeCastle) {
-        this.typeCastle = typeCastle;
+    @Nonnull
+    public String getTypeCastle() {
+        return typeCastle;
     }
 
     @Nonnull
@@ -139,7 +78,14 @@ public class Pattern {
         return accessFrom;
     }
 
-    public void setAccessFrom(@Nonnull int accessFrom) {
-        this.accessFrom = accessFrom;
+    @Override
+    public String toString() {
+        return "Pattern{" +
+                "id=" + id +
+                ", playerId=" + playerId +
+                ", name='" + name + '\'' +
+                ", typeCastle='" + typeCastle + '\'' +
+                ", accessFrom=" + accessFrom +
+                '}';
     }
 }

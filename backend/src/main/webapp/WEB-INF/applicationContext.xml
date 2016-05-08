@@ -29,19 +29,20 @@
     </jaxrs:server>
 
     <!-- Встроенная база данных в памяти -->
-     <jdbc:embedded-database id="dataSource" type="HSQL">
+<!--     <jdbc:embedded-database id="dataSource" type="HSQL">
          <jdbc:script location="classpath:initial-data.sql"/>
      </jdbc:embedded-database>
+-->
     <!-- ну или mysql база данных, не забудь закомментировать предыдущую: -->
 
-<!--
+
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://192.168.10.110:3306/test" />
         <property name="username" value="shk" />
         <property name="password" value="123qwe" />
     </bean>
--->
+
 
 
     <!-- Объект класса, отвечающий за создание EntityManager'ов в репозиториях -->
