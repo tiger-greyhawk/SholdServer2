@@ -9,16 +9,10 @@ import javax.persistence.Lob;
  */
 public class PatternPhotoCreateDto {
 
-    @Column(name = "PATTERN_ID", nullable = false)
     private Integer patternId;
 
-    @Column (name = "PHOTONAME", nullable = false)
-    @Nonnull
     private String photoName;
 
-    @Lob
-    @Column (name = "PHOTO", nullable = false)
-    @Nonnull
     private String photo;
 
     public PatternPhotoCreateDto() {this(null, "", "");

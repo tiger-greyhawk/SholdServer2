@@ -39,8 +39,9 @@ public class PatternPhotoService {
         return convert(patternPhotoRepository.findByPatternId());
     }
 */
-    public PatternPhotoDto findByPatternId(Integer id){
-        return convert(requireNotNull(patternPhotoRepository.findByPatternId(id)));
+    public List<PatternPhotoDto> findByPatternId(Integer id){
+        //return convert(requireNotNull(patternPhotoRepository.findByPatternId(id)));
+        return patternPhotoRepository.findByPatternId(id).stream().map(this::convert).collect(Collectors.toList());
     }
 
     public List<PatternPhotoDto> findAll() {

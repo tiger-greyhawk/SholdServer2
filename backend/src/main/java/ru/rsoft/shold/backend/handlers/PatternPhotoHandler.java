@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.rsoft.shold.backend.service.PatternPhotoService;
 import ru.rsoft.shold.core.dto.PatternPhotoCreateDto;
 import ru.rsoft.shold.core.dto.PatternPhotoDto;
-import ru.rsoft.shold.core.entity.PatternPhoto;
+
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import java.util.List;
 
 /**
  * Created by Admin on 08.05.2016.
@@ -28,13 +29,13 @@ public class PatternPhotoHandler {
 
     @Path("/{id}")
     @GET
-    public PatternPhotoDto get(@PathParam("id") int id) {
+    public List<PatternPhotoDto> get(@PathParam("id") int id) {
         return patternPhotoService.findByPatternId(id);
     }
 
     @Path("/")
     @POST
-    public PatternPhotoDto add(@RequestBody PatternPhotoCreateDto patternCreateDto) {
-        return patternPhotoService.add(patternCreateDto);
+    public PatternPhotoDto add(@RequestBody PatternPhotoCreateDto patternPhotoCreateDto) {
+        return patternPhotoService.add(patternPhotoCreateDto);
     }
 }

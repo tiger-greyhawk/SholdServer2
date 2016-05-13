@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import ru.rsoft.shold.core.entity.Pattern;
 import ru.rsoft.shold.core.entity.PatternPhoto;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,5 +14,5 @@ import java.util.Set;
  */
 public interface PatternPhotoRepository extends JpaRepository<PatternPhoto, Integer> {
     @Query(nativeQuery = true, value = "select * from PATTERN_PHOTO WHERE PATTERN_ID = :patternId")
-    PatternPhoto findByPatternId(@Param("patternId") int patternId);
+    List<PatternPhoto> findByPatternId(@Param("patternId") int patternId);
 }
