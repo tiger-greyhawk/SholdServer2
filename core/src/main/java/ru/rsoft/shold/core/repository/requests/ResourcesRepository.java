@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public interface ResourcesRepository extends JpaRepository<Resources, Integer> {
     Set<Resources> findByVillageId(int villageId);
-    @Query(nativeQuery = true, value = "select * from RESOURCES where timestamp between :startDate and :endDate")
-    Set<Resources> findByTimestampAfter(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    @Query(nativeQuery = true, value = "select * from RESOURCES where timestamp between :startDate and :endDate && PLAYER_ID = :playerId")
+    Set<Resources> findByTimestampAfter(@Param("playerId") int playerId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    Set<Resources> findByPlayerId(@Param("playerId") int playerId);
 }

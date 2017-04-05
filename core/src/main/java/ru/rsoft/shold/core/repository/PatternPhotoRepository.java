@@ -14,5 +14,6 @@ import java.util.Set;
  */
 public interface PatternPhotoRepository extends JpaRepository<PatternPhoto, Integer> {
     @Query(nativeQuery = true, value = "select * from PATTERN_PHOTO WHERE PATTERN_ID = :patternId")
-    List<PatternPhoto> findByPatternId(@Param("patternId") int patternId);
+    //List<PatternPhoto> findByPatternId(@Param("patternId") int patternId);
+    PatternPhoto findByPatternId(@Param("patternId") int patternId);
 }

@@ -52,6 +52,8 @@ public class Village {
         return playerId;
     }
 
+    public void setPlayerId(int playerId) {this.playerId = playerId;}
+
     @Nullable
     public String getName() {
         return name;

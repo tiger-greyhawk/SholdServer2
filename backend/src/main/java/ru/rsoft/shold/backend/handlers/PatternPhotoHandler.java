@@ -29,13 +29,14 @@ public class PatternPhotoHandler {
 
     @Path("/{id}")
     @GET
-    public List<PatternPhotoDto> get(@PathParam("id") int id) {
+    //public List<PatternPhotoDto> get(@PathParam("id") int id) {
+    public PatternPhotoDto get(@PathParam("id") int id) {
         return patternPhotoService.findByPatternId(id);
     }
 
-    @Path("/")
+    @Path("/{id}")
     @POST
-    public PatternPhotoDto add(@RequestBody PatternPhotoCreateDto patternPhotoCreateDto) {
-        return patternPhotoService.add(patternPhotoCreateDto);
+    public PatternPhotoDto add(@RequestBody PatternPhotoCreateDto patternPhotoCreateDto, @PathParam("id") int patternId) {
+        return patternPhotoService.add(patternPhotoCreateDto, patternId);
     }
 }

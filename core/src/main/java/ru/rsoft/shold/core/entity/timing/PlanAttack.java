@@ -17,36 +17,51 @@ public class PlanAttack {
     @Id
     @Column(name = "ID")
     @GeneratedValue
-    private Integer id;
+    private int id;
 
-    @Column (name = "SECRET")
-    @Nullable
-    private String secret;
-
-    @Column (name = "TYPE", nullable = true)
-    @Nullable
-    private String type;
+    @Column(name = "PLAN_ID")
+    @Nonnull
+    private Integer planId;
 
     @Column (name = "NAME", nullable = false)
     @Nonnull
     private String name;
 
+    @Column (name = "SECRET")
+    @Nullable
+    private String secret;
 
-    @Column(name = "VILLAGE_ID", nullable = true)
+    @Column(name = "PLAYER_ID", nullable = false)  // игрок
+    @Nonnull
+    private int playerId;
+
+    @Column(name = "VILLAGE_ID", nullable = true) // дера
     @Nullable
     private int villageId;
 
-    @Column(name = "TIMETO", nullable = false)
+    @Column(name = "VASSAL_ID", nullable = true) // вассал
+    @Nullable
+    private int vassalId;
+
+    @Column (name = "TYPE", nullable = true) // состав ударки/кэпки
+    @Nullable
+    private String type;
+
+    @Column(name = "TIMETO", nullable = false) // время
     @Nonnull
     private long timeTo;
 
-    @Column(name = "CARD", nullable = false)
+    @Column(name = "CARD", nullable = false) // карта
     @Nonnull
     private int card;
 
-    @Column(name = "PLAYER_ID", nullable = false)
+    @Column(name = "READY_IN", nullable = false) // готовность
     @Nonnull
-    private int playerId;
+    private long readyIn;
+
+    @Column(name = "ORDER_IN", nullable = true) // очередность входа
+    @Nullable
+    private int orderIn;
 
     @Column(name = "TIMESTAMP", nullable = false)
     @Nonnull
@@ -56,43 +71,46 @@ public class PlanAttack {
     public PlanAttack() {
     }
 
-    public PlanAttack(String secret,String type, @Nonnull String name, Integer villageId, @Nonnull long timeTo,
-                      @Nonnull int card, @Nonnull Integer playerId, @Nonnull Date timestamp) {
-        this.secret = secret;
-        this.type = type;
+    public PlanAttack(int planId, String name, String secret, @Nonnull int playerId, int villageId, int vassalId, String type, @Nonnull long timeTo,
+                      @Nonnull int card, long readyIn, int orderIn, @Nonnull Date timestamp) {
+        this.planId = planId;
         this.name = name;
+        this.secret = secret;
+        this.playerId = playerId;
         this.villageId = villageId;
+        this.vassalId = vassalId;
+        this.type = type;
         this.timeTo = timeTo;
         this.card = card;
-        this.playerId = playerId;
+        this.readyIn = readyIn;
+        this.orderIn = orderIn;
         this.timestamp = timestamp;
     }
 
-    public PlanAttack(Integer id, String secret, String type, @Nonnull String name, Integer villageId, @Nonnull long timeTo,
-                      @Nonnull int card, @Nonnull Integer playerId, @Nonnull Date timestamp) {
+    public PlanAttack(int id, int planId, String name, String secret, @Nonnull int playerId, int villageId, int vassalId, String type, @Nonnull long timeTo,
+                      @Nonnull int card, long readyIn, int orderIn, @Nonnull Date timestamp) {
         this.id = id;
-        this.secret = secret;
-        this.type = type;
+        this.planId = planId;
         this.name = name;
+        this.secret = secret;
+        this.playerId = playerId;
         this.villageId = villageId;
+        this.vassalId = vassalId;
+        this.type = type;
         this.timeTo = timeTo;
         this.card = card;
-        this.playerId = playerId;
+        this.readyIn = readyIn;
+        this.orderIn = orderIn;
         this.timestamp = timestamp;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    @Nullable
-    public String getSecret() {
-        return secret;
-    }
-
-    @Nullable
-    public String getType() {
-        return type;
+    @Nonnull
+    public Integer getPlanId() {
+        return planId;
     }
 
     @Nonnull
@@ -101,8 +119,28 @@ public class PlanAttack {
     }
 
     @Nullable
-    public Integer getVillageId() {
+    public String getSecret() {
+        return secret;
+    }
+
+    @Nonnull
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    @Nullable
+    public int getVillageId() {
         return villageId;
+    }
+
+    @Nullable
+    public int getVassalId() {
+        return vassalId;
+    }
+
+    @Nullable
+    public String getType() {
+        return type;
     }
 
     @Nonnull
@@ -116,8 +154,13 @@ public class PlanAttack {
     }
 
     @Nonnull
-    public Integer getPlayerId() {
-        return playerId;
+    public long getReadyIn() {
+        return readyIn;
+    }
+
+    @Nullable
+    public int getOrderIn() {
+        return orderIn;
     }
 
     @Nonnull
@@ -129,13 +172,17 @@ public class PlanAttack {
     public String toString() {
         return "PlanAttack{" +
                 "id=" + id +
-                ", secret='" + secret + '\'' +
-                ", type='" + type + '\'' +
+                ", planId=" + planId +
                 ", name='" + name + '\'' +
+                ", secret='" + secret + '\'' +
+                ", playerId=" + playerId +
                 ", villageId=" + villageId +
+                ", vassalId=" + vassalId +
+                ", type='" + type + '\'' +
                 ", timeTo=" + timeTo +
                 ", card=" + card +
-                ", playerId=" + playerId +
+                ", readyIn=" + readyIn +
+                ", orderIn=" + orderIn +
                 ", timestamp=" + timestamp +
                 '}';
     }

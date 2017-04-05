@@ -3,25 +3,22 @@ package ru.rsoft.shold.backend.handlers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.rsoft.shold.backend.security.CustomJdbcDaoImpl;
+
+import ru.rsoft.shold.backend.security.UserDetailsServiceImpl;
+import ru.rsoft.shold.backend.service.PlayerService;
 import ru.rsoft.shold.core.dto.PlayerCreateDto;
 import ru.rsoft.shold.core.dto.PlayerDto;
-import ru.rsoft.shold.core.entity.Player;
-import ru.rsoft.shold.core.entity.User;
 import ru.rsoft.shold.core.entity.Village;
-import ru.rsoft.shold.core.repository.PlayerRepository;
-import ru.rsoft.shold.core.repository.UserRepository;
-import ru.rsoft.shold.core.repository.VillageRepository;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Admin on 26.11.2015.
@@ -29,11 +26,11 @@ import java.util.stream.Collectors;
 @Component
 @Path("/player")
 public class PlayerHandler {
-    private final UserRepository userRepository;
-    private final PlayerRepository playerRepository;
-    private final VillageRepository villageRepository;
+//    private final UserRepository userRepository;
+//    private final PlayerRepository playerRepository;
+//    private final VillageRepository villageRepository;
 //    private final Village village;
-
+/*
     @Autowired
     public PlayerHandler(UserRepository userRepository, PlayerRepository playerRepository, VillageRepository villageRepository) {//, Village village) {
         this.userRepository = userRepository;
@@ -41,82 +38,91 @@ public class PlayerHandler {
         this.villageRepository = villageRepository;
 //        this.village = village;
     }
+*/
+    //@Autowired
+    //private final UserDetailsServiceImpl userDetailsServiceImpl;
+
+    private final PlayerService playerService;
+
+    //private final CustomJdbcDaoImpl customJdbcDao;
+
+
+    /*@Autowired
+    public PlayerHandler(PlayerService playerService, CustomJdbcDaoImpl customJdbcDao) {
+        this.playerService = playerService;
+        this.customJdbcDao = customJdbcDao;
+    }*/
+
+
+/*    @Autowired
+    public PlayerHandler(PlayerService playerService, UserDetailsServiceImpl userDetailsServiceImpl) {
+        this.playerService = playerService;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+    }
+*/
+
+    @Autowired
+    public PlayerHandler(PlayerService playerService) {
+        this.playerService = playerService;
+    }
+
     @Path("/")
     @GET
     public List<PlayerDto> list()  {
-        return playerRepository.findAll().stream().map(this::convert)
-                .collect(Collectors.toList());
+        return playerService.getAll();
     }
 
     public List<Village> villages = new ArrayList<Village>();
 
+    @Path("/faction/{id}")
+    @GET
+    public List<PlayerDto> listByFaction(@PathParam("id") Integer id) {
+        return playerService.getPlayersByFaction(id);
+    }
+
     @Path("/{id}")
     @GET
     public PlayerDto get(@PathParam("id") Integer id) {
-        return convert(requireNotNull(playerRepository.findOne(id)));
+        return playerService.getOne(id);
     }
 
     @Path("/me")
     @GET
     public PlayerDto getMe() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        List<PatternDto> temp = new ArrayList<PatternDto>();
+/*     try
+     {
+         JabberBot jabberBot = new JabberBot("test", "test", "jabber.shold.tk", "jabber.shold.tk", 5223);
+         Thread botThread = new Thread(jabberBot);
+         botThread.start();
+     }
+    catch(Exception e)
+    {
+        System.out.println(e.getMessage());
+    }
+        //jabberBot.run();
+*/
+        return playerService.getMe();
+    }
 
-        String username = ((UserDetails)principal).getUsername();
-        int playerId = playerRepository.findByNick(username).getId();
-        return convert(requireNotNull(playerRepository.findOne(playerId)));
+    @Path("/me")
+    @POST
+    public void changePassword(@RequestBody PlayerCreateDto playerCreateDto, @RequestBody String pass){
+        //customJdbcDao.myChangerPass(playerCreateDto, pass);
     }
 
     @Path("/")
     @POST
     public PlayerDto add(@RequestBody PlayerCreateDto playerCreateDto) {
-        return convert(playerRepository.save(convert(playerCreateDto)));
+        return playerService.addOne(playerCreateDto);
     }
 
     @Path("/{id}")
     @DELETE
     public void delete(@PathParam("id") int id) {
-        try {
-            playerRepository.delete(id);
-        } catch (EmptyResultDataAccessException e) {
-            // надо возвращать 404, если нет такого ресурса
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
+        playerService.deleteOne(id);
     }
 
 
 
-    private <T> T requireNotNull(T object) {
-        if (object == null) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        return object;
-    }
 
-    private PlayerDto convert(Player player) {
-//        if (village.getUser() == null) { userRepository.findOne(1);}
-        return new PlayerDto(
-                player.getId(),
-//                village.getUser().getId(),
-                player.getUserId(),
-
-//                village.getBody() == null ? null : village.getBody().getId(),
-                player.getNick()
-//                player.getFriends()
-
-        );
-    }
-    private Player convert(PlayerCreateDto playerCreateDto) {
-        /**
-         * Что будет, если user не объявлять как final?
-         **/
-        User user = requireNotNull(userRepository.findOne(playerCreateDto.getUserId()));
-        //final User user = requireNotNull(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
-        if (user == null){user = (userRepository.findOne(1));}
-        return new Player(
-                user.getId(),
-                playerCreateDto.getNick()
-        );
-    }
 }

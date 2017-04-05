@@ -39,16 +39,18 @@ public class PatternPhotoService {
         return convert(patternPhotoRepository.findByPatternId());
     }
 */
-    public List<PatternPhotoDto> findByPatternId(Integer id){
-        //return convert(requireNotNull(patternPhotoRepository.findByPatternId(id)));
-        return patternPhotoRepository.findByPatternId(id).stream().map(this::convert).collect(Collectors.toList());
+    public PatternPhotoDto findByPatternId(Integer id){
+        //public List<PatternPhotoDto> findByPatternId(Integer id){
+        return convert(requireNotNull(patternPhotoRepository.findByPatternId(id)));
+        //return patternPhotoRepository.findByPatternId(id).stream().map(this::convert).collect(Collectors.toList());
     }
 
     public List<PatternPhotoDto> findAll() {
         return patternPhotoRepository.findAll().stream().map(this::convert).collect(Collectors.toList());
     }
 
-    public PatternPhotoDto add(PatternPhotoCreateDto patternPhotoCreateDto) {
+    public PatternPhotoDto add(PatternPhotoCreateDto patternPhotoCreateDto, int patternId) {
+        patternPhotoCreateDto = new PatternPhotoCreateDto(patternId, patternPhotoCreateDto.getPhotoName(), patternPhotoCreateDto.getPhoto());
         return convert(patternPhotoRepository.save(convert(patternPhotoCreateDto)));
     }
 

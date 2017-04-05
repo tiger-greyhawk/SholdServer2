@@ -15,53 +15,56 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlanAttackCreateDto {
 
-    @Nullable
-    private String secret;
-    @Nullable
-    private String type;
-
+    @Nonnull
+    private int planId;
     @Nonnull
     private String name;
-
     @Nullable
-    private Integer villageId;
-
+    private String secret;
+    @Nonnull
+    private int playerId;
+    @Nullable
+    private int villageId;
+    @Nullable
+    private int vassalId;
+    @Nullable
+    private String type;
     @Nonnull
     private long timeTo;
-
     @Nonnull
     private int card;
-
     @Nonnull
-    private Integer playerId;
-
-    @Nonnull
+    private long readyIn;
+    @Nullable
+    private int orderIn;
+    @Nullable
     private Date timestamp;
 
     public PlanAttackCreateDto() {
-        this("", "", "", 0, 100000000000L, 0, 0, (new java.util.Date()));
+        this(0, "", "", 0, 0, 0, "", 0L, 1, 0L, 0, (new java.util.Date()));
     }
 
-    public PlanAttackCreateDto(String secret, String type, @Nonnull String name, Integer villageId,
-                               @Nonnull long timeTo, @Nonnull int card, @Nonnull Integer playerId, @Nonnull Date timestamp) {
-        this.secret = secret;
-        this.type = type;
+    public PlanAttackCreateDto(int planId, String name, String secret, int playerId,
+                               int villageId, int vassalId, String type,  @Nonnull long timeTo,
+                               @Nonnull int card, @Nonnull long readyIn, int orderIn,
+                               @Nullable Date timestamp) {
+        this.planId = planId;
         this.name = name;
+        this.secret = secret;
+        this.playerId = playerId;
         this.villageId = villageId;
+        this.vassalId = vassalId;
+        this.type = type;
         this.timeTo = timeTo;
         this.card = card;
-        this.playerId = playerId;
+        this.readyIn = readyIn;
+        this.orderIn = orderIn;
         this.timestamp = timestamp;
     }
 
-    @Nullable
-    public String getSecret() {
-        return secret;
-    }
-
-    @Nullable
-    public String getType() {
-        return type;
+    @Nonnull
+    public int getPlanId() {
+        return planId;
     }
 
     @Nonnull
@@ -70,8 +73,28 @@ public class PlanAttackCreateDto {
     }
 
     @Nullable
-    public Integer getVillageId() {
+    public String getSecret() {
+        return secret;
+    }
+
+    @Nonnull
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    @Nullable
+    public int getVillageId() {
         return villageId;
+    }
+
+    @Nullable
+    public int getVassalId() {
+        return vassalId;
+    }
+
+    @Nullable
+    public String getType() {
+        return type;
     }
 
     @Nonnull
@@ -85,11 +108,16 @@ public class PlanAttackCreateDto {
     }
 
     @Nonnull
-    public Integer getPlayerId() {
-        return playerId;
+    public long getReadyIn() {
+        return readyIn;
     }
 
-    @Nonnull
+    @Nullable
+    public int getOrderIn() {
+        return orderIn;
+    }
+
+    @Nullable
     public Date getTimestamp() {
         return timestamp;
     }
@@ -97,13 +125,17 @@ public class PlanAttackCreateDto {
     @Override
     public String toString() {
         return "PlanAttackCreateDto{" +
-                "secret='" + secret + '\'' +
-                "type='" + type + '\'' +
+                "planId=" + planId +
                 ", name='" + name + '\'' +
+                ", secret='" + secret + '\'' +
+                ", playerId=" + playerId +
                 ", villageId=" + villageId +
+                ", vassalId=" + vassalId +
+                ", type='" + type + '\'' +
                 ", timeTo=" + timeTo +
                 ", card=" + card +
-                ", playerId=" + playerId +
+                ", readyIn=" + readyIn +
+                ", orderIn=" + orderIn +
                 ", timestamp=" + timestamp +
                 '}';
     }

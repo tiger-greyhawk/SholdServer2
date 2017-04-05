@@ -1,7 +1,12 @@
 package ru.rsoft.shold.backend.handlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.rsoft.shold.core.dto.VillageCreateDto;
 import ru.rsoft.shold.core.dto.VillageDto;
@@ -10,6 +15,7 @@ import ru.rsoft.shold.core.entity.Village;
 import ru.rsoft.shold.core.repository.PlayerRepository;
 import ru.rsoft.shold.core.repository.VillageRepository;
 
+import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -22,6 +28,7 @@ import java.util.stream.Collectors;
  */
 
 @Component
+@Transactional(propagation = Propagation.REQUIRED)
 @Path("/village")
 public class VillageHandler {
 
@@ -38,8 +45,19 @@ public class VillageHandler {
     @Path("/")
     @GET
     public List<VillageDto> list()  {
-        return villageRepository.findAll().stream().map(this::convert)
-                .collect(Collectors.toList());
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+        int playerId = playerRepository.findByNick(username).getId();
+
+        final Set<Village> villages = villageRepository.findByPlayerId(playerId);
+        final List<VillageDto> result = new ArrayList<>(villages.size());
+        for (final Village village : villages) {
+            final VillageDto villageDto = convert(village);
+            result.add(villageDto);
+        }
+        return result;
+
+//        return villageRepository.findAll().stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Path("/{id}")
@@ -64,7 +82,13 @@ public class VillageHandler {
     @Path("/")
     @POST
     public VillageDto add(@RequestBody VillageCreateDto villageCreateDto) {
-        return convert(villageRepository.save(convert(villageCreateDto)));
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+        int playerId = playerRepository.findByNick(username).getId();
+        final Village village = convert(new VillageCreateDto(playerId, villageCreateDto.getName(), villageCreateDto.getIdInWorld()));
+        //village.setPlayerId(playerId);
+        return convert(villageRepository.save(village));
+        //return convert(villageRepository.save(convert(villageCreateDto)));
     }
 
     @Path("/player/{id}")
@@ -90,6 +114,30 @@ public class VillageHandler {
             .map(this::convert)
             .collect(Collectors.toList());
 */
+    }
+
+    @Path("/{id}")
+    @DELETE
+    public void delete(@PathParam("id") int id) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+
+        int playerId = playerRepository.findByNick(username).getId();
+        if (playerId == villageRepository.findOne(id).getPlayerId())
+            try {
+                villageRepository.delete(id);
+            }
+            catch (org.hibernate.exception.ConstraintViolationException e){
+                throw new WebApplicationException("require", Response.Status.CONFLICT );
+            }
+            catch (EmptyResultDataAccessException e)
+                    //()
+            {
+                // надо возвращать 404, если нет такого ресурса
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+
+        else new WebApplicationException(Response.Status.FORBIDDEN);
     }
 
     private <T> T requireNotNull(T object) {

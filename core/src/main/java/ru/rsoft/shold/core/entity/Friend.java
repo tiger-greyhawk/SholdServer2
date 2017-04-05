@@ -18,22 +18,26 @@ public class Friend {
     @Column (name = "FRIEND_ID")
     private final int friendId;
 
+    @Column (name = "CONFIRM")
+    private final boolean confirm;
+
     @Column (name = "COMMENT")
     @Nullable
     private final String comment;
 
     private Friend() {
-        this(0, 0, 0,"");
+        this(0, 0, 0, false,"");
     }
 
-    public Friend(int playerId, int friendId, @Nullable String comment) {
-        this(0, playerId, friendId, comment);
+    public Friend(int playerId, int friendId, boolean confirm, @Nullable String comment) {
+        this(0, playerId, friendId, confirm, comment);
     }
 
-    public Friend(int id, int playerId, int friendId, String comment) {
+    public Friend(int id, int playerId, int friendId, boolean confirm, String comment) {
         this.id = id;
         this.playerId = playerId;
         this.friendId = friendId;
+        this.confirm = confirm;
         this.comment = comment;
     }
 
@@ -49,6 +53,10 @@ public class Friend {
         return friendId;
     }
 
+    public boolean isConfirm() {
+        return confirm;
+    }
+
     @Nullable
     public String getComment() {
         return comment;
@@ -60,6 +68,7 @@ public class Friend {
                 "id=" + id +
                 ", playerId=" + playerId +
                 ", friendId=" + friendId +
+                ", confirm=" + confirm +
                 ", comment='" + comment + '\'' +
                 '}';
     }

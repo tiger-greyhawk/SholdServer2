@@ -9,7 +9,7 @@ import java.util.Set;
  * Created by Admin on 16.11.2015.
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
-    Set<User> findByLogin (String login);
+    User findByUsername (String login);
 //    Set<User> getId();
 
 }

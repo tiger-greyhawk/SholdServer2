@@ -1,10 +1,13 @@
 package ru.rsoft.shold.core.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.annotation.Nonnull;
 
 /**
  * Created by Admin on 09.05.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PatternFormationCreateDto {
 
     private Integer patternId;

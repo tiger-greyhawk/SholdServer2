@@ -29,13 +29,14 @@ public class PatternFormationHandler {
 
     @Path("/{id}")
     @GET
-    public List<PatternFormationDto> get(@PathParam("id") int id) {
+    //public List<PatternFormationDto> get(@PathParam("id") int id) {
+    public PatternFormationDto get(@PathParam("id") int id) {
         return patternFormationService.findByPatternId(id);
     }
 
-    @Path("/")
+    @Path("/{id}")
     @POST
-    public PatternFormationDto add(@RequestBody PatternFormationCreateDto patternFormationCreateDto) {
-        return patternFormationService.add(patternFormationCreateDto);
+    public PatternFormationDto add(@RequestBody PatternFormationCreateDto patternFormationCreateDto, @PathParam("id") int patternId) {
+        return patternFormationService.add(patternFormationCreateDto, patternId);
     }
 }

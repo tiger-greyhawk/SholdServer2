@@ -2,47 +2,70 @@ package ru.rsoft.shold.core.entity;
 
 import javax.annotation.Nonnull;
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Admin on 16.11.2015.
  */
 @Entity
-@Table(name="USERS_MY")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "id")
+    private int id;
 
-    @Column (name = "LOGIN", nullable = false)
+    @Column (name = "username", unique = true, nullable = false)
     @Nonnull
-    private String login;
+    private String username;
 
-    @Column (name = "PASSWORD", nullable = false)
+    @Column (name = "password", nullable = false)
     @Nonnull
     private String password;
 
+    @Column (name = "enabled", nullable = false)
+    @Nonnull
+    private boolean enabled;
+
+    @ManyToMany
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserRole> roles;
+
     public User() {
-        this("", null);
+        this("", null, true);
     }
 
-    public User(@Nonnull String login,@Nonnull String password) {
-        this.login = login;
+    public User(@Nonnull String username,@Nonnull String password, @Nonnull boolean enabled) {
+        this.username = username;
         this.password = password;
+        this.enabled = enabled;
     }
 
+    @Nonnull
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-    public Integer getId() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setEnabled(@Nonnull boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getId() {
         return id;
     }
 
     @Nonnull
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(@Nonnull String login) {
-        this.login = login;
+    public void setUsername(@Nonnull String username) {
+        this.username = username;
     }
 
     @Nonnull
@@ -54,12 +77,22 @@ public class User {
         this.password = password;
     }
 
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", roles=" + roles +
                 '}';
     }
 }

@@ -17,18 +17,18 @@ public class VillageDto {
     @Nullable
     private final String name;
     @Nonnull
-    private final Integer id_in_world;
+    private final Integer idInWorld;
 
     public VillageDto() {
         this(0, 0, "", 0);
     }
 
     public VillageDto(int id, @Nullable Integer userId, @Nullable String name,
-                       @Nonnull Integer id_in_world) {
+                       @Nonnull Integer idInWorld) {
         this.id = id;
         this.userId = userId;
         this.name = name;
-        this.id_in_world = id_in_world;
+        this.idInWorld = idInWorld;
     }
 
     public int getId() {
@@ -47,7 +47,7 @@ public class VillageDto {
 
     @Nonnull
     public Integer getIdInWorld() {
-        return id_in_world;
+        return idInWorld;
     }
 
 
@@ -57,7 +57,7 @@ public class VillageDto {
                 "id=" + id +
                 ", UserId=" + userId +
                 ", name=" + name +
-                ", id in world='" + id_in_world + '\'' +
+                ", idInWorld='" + idInWorld + '\'' +
                 '}';
     }
 }

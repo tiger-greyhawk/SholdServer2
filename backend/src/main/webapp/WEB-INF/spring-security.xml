@@ -10,14 +10,17 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd">
     <http pattern="/pages/js/**" security="none"/>
     <http pattern="/backend/**" security="none"/>
     <http pattern="/css/**" security="none"/>
+    <http pattern="/friends/register/**" security="none" />
 <!--    <http pattern="/login.jsp*" security="none"/>
     <http pattern="/backend/login.jsp*" security="none"/> -->
     <!--<http pattern="/*" security="none"/> -->
     <http auto-config="false" use-expressions="true">
         <csrf disabled="true"/>
-        <intercept-url pattern="/backend/login*" access="permitAll"/>
-        <!-- <intercept-url pattern="/backend/index.jsp*" access="permitAll"/> -->
+        <anonymous enabled="true" username="guest" granted-authority="ROLE_ANONYMOUS"/>
+        <!-- <intercept-url pattern="/domination/login*" access="permitAll" requires-channel="https"/> -->
+        <intercept-url pattern="/friends/register/new/**" access="hasRole('ROLE_ANONYMOUS')"/>
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/domination/friends/register/**" access="permitAll"/>
         <form-login />
         <logout />
         <!-- <form-login login-page='/user?_type=json'/>
@@ -29,11 +32,58 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd">
     </http>
 
     <authentication-manager alias="authenticationManager">
-        <authentication-provider>
-            <jdbc-user-service data-source-ref="dataSource"/>
+        <!-- <authentication-provider user-service-ref="myUserDetailsService"> -->
+        <!-- <authentication-provider user-service-ref="userDetailsServiceImpl"> -->
+        <authentication-provider user-service-ref="jdbcGroupsImpl">
+            <password-encoder ref="encoder">
+                    <!-- <salt-source user-property="username"/> -->
+            </password-encoder>
+            <!-- <jdbc-user-service data-source-ref="dataSource"/> -->
             <!-- <user-service>
                 <user authorities="ROLE_USER" name="guest" password="guest" />
             </user-service> -->
         </authentication-provider>
     </authentication-manager>
+
+    <beans:bean id="userDetailsServiceImpl"
+                class="ru.rsoft.shold.backend.security.UserDetailsServiceImpl">
+        <!-- <beans:property name="enableGroups" value="true"/>
+        <beans:property name="enableAuthorities" value="false"/> -->
+        <!-- <beans:property name="dataSource" ref="dataSource" /> -->
+    </beans:bean>
+
+    <beans:bean id="jdbcGroupsImpl" class="ru.rsoft.shold.backend.security.CustomJdbcDaoImpl">
+        <beans:property name="enableGroups" value="true"/>
+        <beans:property name="enableAuthorities" value="false"/>
+        <beans:property name="dataSource" ref="dataSource"/>
+        <!-- <beans:property name="usersByUsernameQuery">
+            <beans:value>SELECT LOGIN, PASSWORD,
+                1 FROM USERS_MY WHERE LOGIN = ?
+            </beans:value>
+        </beans:property>
+        <beans:property name="groupAuthoritiesByUsernameQuery">
+            <beans:value>SELECT G.GROUP_ID, G.GROUP_NAME, P.NAME
+                FROM USERS_MY U
+                JOIN USER_GROUP UG on U.USER_INFO_ID = UG.USER_INFO_ID
+                JOIN GROUP G ON UG.GROUP_ID = G.GROUP_ID
+                JOIN GROUP_PERMISSION GP ON G.GROUP_ID = GP.GROUP_ID
+                JOIN PERMISSION P ON GP.PERMISSION_ID = P.PERMISSION_ID
+                WHERE U.LOGIN = ?
+            </beans:value>
+        </beans:property> -->
+    </beans:bean>
+
+    <beans:bean id="userServiceImpl"
+                class="ru.rsoft.shold.backend.security.UserServiceImpl">
+    </beans:bean>
+
+    <beans:bean id="encoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <beans:constructor-arg name="strength" value="11"/>
+    </beans:bean>
+
+    <!--<beans:bean id="myUserDetailsService"
+                class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+        <beans:property name="dataSource" ref="dataSource"/>
+    </beans:bean> -->
 </beans:beans>

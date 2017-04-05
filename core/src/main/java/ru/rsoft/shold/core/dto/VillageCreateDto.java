@@ -16,23 +16,25 @@ public class VillageCreateDto {
     @Nullable
     private final String name;
     @Nonnull
-    private final Integer id_in_world;
+    private final Integer idInWorld;
 
     public VillageCreateDto() {
         this(0, "", 0);
     }
 
     public VillageCreateDto(@Nullable Integer playerId, @Nullable String name,
-                             @Nonnull Integer id_in_world) {
+                             @Nonnull Integer idInWorld) {
         this.playerId = playerId;
         this.name = name;
-        this.id_in_world = id_in_world;
+        this.idInWorld = idInWorld;
     }
 
     @Nullable
     public Integer getPlayerId() {
         return playerId;
     }
+
+
 
     @Nullable
     public String getName() {
@@ -41,7 +43,7 @@ public class VillageCreateDto {
 
     @Nonnull
     public Integer getIdInWorld() {
-        return id_in_world;
+        return idInWorld;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class VillageCreateDto {
         return "VillageCreateDto{" +
                 "playerId=" + playerId +
                 ", name=" + name +
-                ", id in world='" + id_in_world + '\'' +
+                ", idInWorld='" + idInWorld + '\'' +
                 '}';
     }
 }

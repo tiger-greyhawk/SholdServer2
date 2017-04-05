@@ -1,5 +1,7 @@
 package ru.rsoft.shold.core.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.annotation.Nonnull;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.Lob;
 /**
  * Created by Admin on 08.05.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PatternPhotoDto {
 
     private Integer id;

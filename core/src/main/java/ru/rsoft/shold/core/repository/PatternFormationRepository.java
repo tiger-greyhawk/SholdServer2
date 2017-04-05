@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface PatternFormationRepository extends JpaRepository<PatternFormation, Integer> {
     @Query(nativeQuery = true, value = "select * from PATTERN_FORMATION WHERE PATTERN_ID = :patternId")
-    List<PatternFormation> findByPatternId(@Param("patternId") int patternId);
+    PatternFormation findByPatternId(@Param("patternId") int patternId);
 }

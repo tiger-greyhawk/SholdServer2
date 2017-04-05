@@ -1,16 +1,16 @@
 package ru.rsoft.shold.backend.handlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.rsoft.shold.backend.service.PatternService;
 import ru.rsoft.shold.core.dto.PatternCreateDto;
 import ru.rsoft.shold.core.dto.PatternDto;
+import ru.rsoft.shold.core.entity.Pattern;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -26,7 +26,6 @@ public class PatternHandler {
     @Autowired
     public PatternHandler(PatternService patternService) {
         this.patternService = patternService;
-
     }
 
     @Path("/")
@@ -58,5 +57,17 @@ public class PatternHandler {
     @POST
     public PatternDto add(@RequestBody PatternCreateDto patternCreateDto) {
         return patternService.add(patternCreateDto);
+    }
+
+    @Path("/{id}")
+    @PUT
+    public PatternDto update(@PathParam("id") int id, @RequestBody PatternCreateDto patternCreateDto) {
+        return patternService.update(id, patternCreateDto);
+    }
+
+    @Path("/{id}")
+    @DELETE
+    public void delete(@PathParam("id") int id) {
+        patternService.delete(id);
     }
 }

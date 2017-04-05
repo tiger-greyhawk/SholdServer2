@@ -3,6 +3,7 @@ package ru.rsoft.shold.core.dto.requests;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Date;
 
 /**
@@ -13,6 +14,8 @@ public class ResourcesDto {
 
     private final int id;
     @Nonnull
+    private int worldId;
+    @Nonnull
     private final String type;
     @Nonnull
     private final String name;
@@ -20,6 +23,8 @@ public class ResourcesDto {
     private final int villageId;
     @Nonnull
     private final int amount;
+    @Nullable
+    private final int onWay;
     @Nonnull
     private final int max_quantum;
     @Nonnull
@@ -32,15 +37,18 @@ public class ResourcesDto {
     public ResourcesDto() {
         //java.util.Date today = new java.util.Date();
         //this(0, "", "", 0, 0, 0, 0, new Timestamp(new java.util.Date().getTime()));
-        this(0, "", "", 0, 0, 0, 0, (new java.util.Date()), (new java.util.Date()));
+        this(0, 0, "", "", 0, 0, 0, 0, 0, (new java.util.Date()), (new java.util.Date()));
     }
 
-    public ResourcesDto(int id, @Nonnull String type, @Nonnull String name, @Nonnull int villageId, @Nonnull int amount, @Nonnull int max_quantum, @Nonnull int playerId, @Nonnull Date timestamp, Date currentTimestamp) {
+    public ResourcesDto(int id, int worldId, @Nonnull String type, @Nonnull String name, @Nonnull int villageId, @Nonnull int amount, @Nullable int onWay,
+                        @Nonnull int max_quantum, @Nonnull int playerId, @Nonnull Date timestamp, Date currentTimestamp) {
         this.id = id;
+        this.worldId = worldId;
         this.type = type;
         this.name = name;
         this.villageId = villageId;
         this.amount = amount;
+        this.onWay = onWay;
         this.max_quantum = max_quantum;
         this.playerId = playerId;
         this.timestamp = timestamp;
@@ -49,6 +57,11 @@ public class ResourcesDto {
 
     public int getId() {
         return id;
+    }
+
+    @Nonnull
+    public int getWorldId() {
+        return worldId;
     }
 
     @Nonnull
@@ -69,6 +82,11 @@ public class ResourcesDto {
     @Nonnull
     public int getAmount() {
         return amount;
+    }
+
+    @Nullable
+    public int getOnWay() {
+        return onWay;
     }
 
     @Nonnull
@@ -94,10 +112,12 @@ public class ResourcesDto {
     public String toString() {
         return "ResourcesDto{" +
                 "id=" + id +
+                ", worldId=" + worldId +
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", villageId=" + villageId +
                 ", amount=" + amount +
+                ", onWay=" + onWay +
                 ", max_quantum=" + max_quantum +
                 ", playerId=" + playerId +
                 ", timestamp=" + timestamp +

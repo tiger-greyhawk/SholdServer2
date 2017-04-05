@@ -18,12 +18,16 @@ public class FriendsCreateDto {
     private final int friendId;
 
     @Nullable
+    private  final boolean confirm;
+
+    @Nullable
     private final String comment;
 
-    public FriendsCreateDto(@Nonnull int playerId, @Nullable int friendId, @Nullable String comment) {
+    public FriendsCreateDto(@Nonnull int playerId, @Nullable int friendId, @Nullable boolean confirm, @Nullable String comment) {
 //    public FriendsCreateDto(@Nonnull int playerId, @Nullable String comment) {
         this.playerId = playerId;
         this.friendId = friendId;
+        this.confirm = confirm;
         this.comment = comment;
     }
 
@@ -38,15 +42,22 @@ public class FriendsCreateDto {
     }
 
     @Nullable
+    public boolean isConfirm() {
+        return confirm;
+    }
+
+    @Nullable
     public String getComment() {
         return comment;
     }
+
 
     @Override
     public String toString() {
         return "FriendsCreateDto{" +
                 "playerId=" + playerId +
                 ", friendId=" + friendId +
+                ", confirm=" + confirm +
                 ", comment='" + comment + '\'' +
                 '}';
     }

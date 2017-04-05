@@ -2,6 +2,7 @@ package ru.rsoft.shold.core.entity.requests;
 
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -15,7 +16,11 @@ public class Resources {
     @Id
     @Column(name = "ID")
     @GeneratedValue
-    private Integer id;
+    private int id;
+
+    @Column (name = "", nullable = false)
+    @Nonnull
+    private int worldId;
 
     @Column (name = "TYPE", nullable = false)
     @Nonnull
@@ -28,11 +33,15 @@ public class Resources {
 
     @Column(name = "VILLAGE_ID", nullable = false)
     @Nonnull
-    private Integer villageId;
+    private int villageId;
 
     @Column(name = "AMOUNT", nullable = false)
     @Nonnull
     private int amount;
+
+    @Column(name = "ON_WAY")
+    @Nullable
+    private int onWay;
 
     @Column(name = "MAX_QUANTITY", nullable = false)
     @Nonnull
@@ -40,7 +49,7 @@ public class Resources {
 
     @Column(name = "PLAYER_ID", nullable = false)
     @Nonnull
-    private Integer playerId;
+    private int playerId;
 
     @Column(name = "TIMESTAMP", nullable = false)
     @Nonnull
@@ -48,18 +57,21 @@ public class Resources {
     private Date timestamp;
 
     private Resources() {
-        this.id = null;
+        this.id = 0;
+        this.worldId = 0;
         this.type = "resources";
         this.name = "nothing";
         this.amount = 0;
+        this.onWay = 0;
         this.maxQuantity = 300;
         this.playerId = 0;
         this.timestamp = new Timestamp(new Date().getTime());
     }
-
-    public Resources(@Nonnull String type, @Nonnull String name, @Nonnull Integer villageId, int amount,
+/*
+    public Resources(@Nonnull int worldId, @Nonnull String type, @Nonnull String name, @Nonnull Integer villageId, int amount,
                      int maxQuantity, @Nonnull Integer playerId, @Nonnull Date timestamp) {
         this.id = null;
+        this.worldId = worldId;
         this.type = type;
         this.name = name;
         this.villageId = villageId;
@@ -68,14 +80,18 @@ public class Resources {
         this.playerId = playerId;
         this.timestamp = timestamp;
     }
+*/
 
-    public Resources(Integer id, @Nonnull String type, @Nonnull String name, @Nonnull Integer villageId, int amount,
-                     int maxQuantity, @Nonnull Integer playerId, @Nonnull Date timestamp) {
+
+    public Resources(int id, @Nonnull int worldId, @Nonnull String type, @Nonnull String name, @Nonnull int villageId, int amount, int onWay,
+                     int maxQuantity, @Nonnull int playerId, @Nonnull Date timestamp) {
         this.id = id;
+        this.worldId = worldId;
         this.type = type;
         this.name = name;
         this.villageId = villageId;
         this.amount = amount;
+        this.onWay = onWay;
         this.maxQuantity = maxQuantity;
         this.playerId = playerId;
         this.timestamp = timestamp;
@@ -83,6 +99,11 @@ public class Resources {
 
     public int getId() {
         return id;
+    }
+
+    @Nonnull
+    public int getWorldId() {
+        return worldId;
     }
 
     @Nonnull
@@ -96,7 +117,7 @@ public class Resources {
     }
 
     @Nonnull
-    public Integer getVillageId() {
+    public int getVillageId() {
         return villageId;
     }
 
@@ -105,13 +126,26 @@ public class Resources {
         return amount;
     }
 
+    public void setAmount(@Nonnull int amount) {
+        this.amount = amount;
+    }
+
+    @Nullable
+    public int getOnWay() {
+        return onWay;
+    }
+
+    public void setOnWay(@Nullable int onWay) {
+        this.onWay = onWay;
+    }
+
     @Nonnull
     public int getMaxQuantity() {
         return maxQuantity;
     }
 
     @Nonnull
-    public Integer getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
@@ -124,10 +158,12 @@ public class Resources {
     public String toString() {
         return "Resources{" +
                 "id=" + id +
+                ", worldId=" + worldId +
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", villageId=" + villageId +
                 ", amount=" + amount +
+                ", onWay=" + onWay +
                 ", maxQuantity=" + maxQuantity +
                 ", playerId=" + playerId +
                 ", timestamp=" + timestamp +

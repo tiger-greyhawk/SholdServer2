@@ -24,13 +24,17 @@ public class FriendsDto {
     private final int friendId;
 
     @Nullable
+    private  final boolean confirm;
+
+    @Nullable
     private final String comment;
 
-    public FriendsDto(int id, @Nonnull int playerId, @Nullable int friendId, @Nullable String comment) {
+    public FriendsDto(int id, @Nonnull int playerId, @Nullable int friendId, @Nullable boolean confirm, @Nullable String comment) {
 //    public FriendsDto(int id, @Nonnull int playerId, @Nullable String comment) {
         this.id = id;
         this.playerId = playerId;
         this.friendId = friendId;
+        this.confirm = confirm;
         this.comment = comment;
     }
 
@@ -57,6 +61,11 @@ public class FriendsDto {
     }
 
     @Nullable
+    public boolean isConfirm() {
+        return confirm;
+    }
+
+    @Nullable
     public String getComment() {
         return comment;
     }
@@ -67,6 +76,7 @@ public class FriendsDto {
                 "id=" + id +
                 ", playerId=" + playerId +
                 ", friendId=" + friendId +
+                ", confirm=" + confirm +
                 ", comment='" + comment + '\'' +
                 '}';
     }

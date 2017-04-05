@@ -38,7 +38,7 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://192.168.10.110:3306/test" />
+        <property name="url" value="jdbc:mysql://192.168.10.110:3306/domination" />
         <property name="username" value="shk" />
         <property name="password" value="123qwe" />
     </bean>
@@ -74,11 +74,18 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
-
-    <bean id="userDetailsService"
-          class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+<!--
+    <bean id="userDetailsServiceImpl" class="ru.rsoft.shold.backend.security.UserDetailsServiceImpl">
+           class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+-->
+    <!--
+    <bean id="userDetailsServiceImpl" class="ru.rsoft.shold.backend.security.UserDetailsServiceImpl"> -->
+        <!-- class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl"> --> <!--
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+-->
 
     <!-- Указания, где искать интерфейсы классов-репозиториев (папочка, где искать репозитории) -->
     <jpa:repositories base-package="ru.rsoft.shold.core" />

@@ -2,6 +2,7 @@ package ru.rsoft.shold.core.entity;
 
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.*;
 
 /**
@@ -31,7 +32,11 @@ public class Pattern {
     @Nonnull
     private int accessFrom; //доступ побитово 1-овнер, 2-группа, 3-друзья, 4-остальные
 
-    private Pattern() {this(0, 0, "", "", 0000);
+    @Column (name = "COMMENT", nullable = true)
+    @Nullable
+    private String comment;
+
+    private Pattern() {this(0, 0, "", "", 0000, "");
     }
 /*
     public Pattern(String name, String typeCastle, Integer playerId) {
@@ -46,12 +51,13 @@ public class Pattern {
 //        this.accessFrom = 0000;
     }
 */
-    public Pattern(Integer id, Integer playerId, String name, String typeCastle, int accessFrom) {
+    public Pattern(Integer id, Integer playerId, String name, String typeCastle, int accessFrom, String comment) {
         this.id = id;
         this.playerId = playerId;
         this.name = name;
         this.typeCastle = typeCastle;
         this.accessFrom = accessFrom;
+        this.comment = comment;
     }
 
     public Integer getId() {
@@ -78,6 +84,15 @@ public class Pattern {
         return accessFrom;
     }
 
+    @Nullable
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(@Nullable String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         return "Pattern{" +
@@ -86,6 +101,7 @@ public class Pattern {
                 ", name='" + name + '\'' +
                 ", typeCastle='" + typeCastle + '\'' +
                 ", accessFrom=" + accessFrom +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 }

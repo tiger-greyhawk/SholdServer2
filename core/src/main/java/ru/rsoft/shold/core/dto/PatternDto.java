@@ -3,6 +3,7 @@ package ru.rsoft.shold.core.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.Id;
 
 /**
@@ -26,8 +27,11 @@ public class PatternDto {
     @Nonnull
     private final Integer accessFrom;
 
+    @Nullable
+    private final String comment;
+
     private PatternDto() {
-        this(null, null, "", "", 0000);
+        this(null, null, "", "", 0000, "");
     }
 
 /*
@@ -35,12 +39,13 @@ public class PatternDto {
         this(id, name, "", "", "", "", playerId, typeCastle, 1000);
     }
 */
-    public PatternDto(Integer id, @Nonnull Integer playerId, @Nonnull String name, @Nonnull String typeCastle, @Nonnull int accessFrom) {
+    public PatternDto(Integer id, @Nonnull Integer playerId, @Nonnull String name, @Nonnull String typeCastle, @Nonnull int accessFrom, @Nullable String comment) {
         this.id = id;
         this.playerId = playerId;
         this.name = name;
         this.typeCastle = typeCastle;
         this.accessFrom = accessFrom;
+        this.comment = comment;
     }
 
     public Integer getId() {
@@ -68,6 +73,11 @@ public class PatternDto {
         return accessFrom;
     }
 
+    @Nullable
+    public String getComment() {
+        return comment;
+    }
+
     @Override
     public String toString() {
         return "PatternDto{" +
@@ -76,6 +86,7 @@ public class PatternDto {
                 ", name='" + name + '\'' +
                 ", typeCastle='" + typeCastle + '\'' +
                 ", accessFrom=" + accessFrom +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 }

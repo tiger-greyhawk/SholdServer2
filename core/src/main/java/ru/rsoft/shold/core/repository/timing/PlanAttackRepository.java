@@ -16,6 +16,7 @@ import java.util.Set;
 public interface PlanAttackRepository extends JpaRepository<PlanAttack, Integer> {
     Set<PlanAttack> findByPlayerId(int villageId);
     List<PlanAttack> findBySecret(String secret);
+    List<PlanAttack> findByPlanId(int id);
     @Query(nativeQuery = true, value = "select * from PLANATTACK where timestamp between :startDate and :endDate")
     Set<PlanAttack> findByTimestampAfter(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }

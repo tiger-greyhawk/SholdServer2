@@ -27,16 +27,17 @@ public class PatternFormationService {
         this.patternFormationRepository = patternFormationRepository;
     }
 
-    public List<PatternFormationDto> findByPatternId(Integer id){
-        //return convert(requireNotNull(patternFormationRepository.findByPatternId(id)));
-        return patternFormationRepository.findByPatternId(id).stream().map(this::convert).collect(Collectors.toList());
+    public PatternFormationDto findByPatternId(Integer id){
+        return convert(requireNotNull(patternFormationRepository.findByPatternId(id)));
+        //return patternFormationRepository.findByPatternId(id).stream().map(this::convert).collect(Collectors.toList());
     }
 
     public List<PatternFormationDto> findAll() {
         return patternFormationRepository.findAll().stream().map(this::convert).collect(Collectors.toList());
     }
 
-    public PatternFormationDto add(PatternFormationCreateDto patternFormationCreateDto) {
+    public PatternFormationDto add(PatternFormationCreateDto patternFormationCreateDto, int patternId) {
+        patternFormationCreateDto = new PatternFormationCreateDto(patternId, patternFormationCreateDto.getFileName(), patternFormationCreateDto.getFile());
         return convert(patternFormationRepository.save(convert(patternFormationCreateDto)));
     }
 

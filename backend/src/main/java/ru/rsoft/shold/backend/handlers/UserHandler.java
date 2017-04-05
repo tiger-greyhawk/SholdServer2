@@ -62,7 +62,7 @@ public class UserHandler {
             // надо возвращать 404, если нет такого ресурса
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        userToUpdate.setLogin(userCreateDto.getLogin());
+        userToUpdate.setUsername(userCreateDto.getLogin());
         userToUpdate.setPassword(userCreateDto.getPassword());
         return convert(userRepository.save(userToUpdate));
     }
@@ -71,6 +71,7 @@ public class UserHandler {
     @GET
     public UserDto get(@PathParam("id") int id) {
         final User user = userRepository.findOne(id);
+
         if (user == null) {
             // надо возвращать 404, если нет такого ресурса
 
@@ -92,11 +93,11 @@ public class UserHandler {
     }
 
     private UserDto convert(User user) {
-        return new UserDto(user.getId(), user.getLogin(), user.getPassword());
+        return new UserDto(user.getId(), user.getUsername(), user.getPassword());
     }
 
     private User convert(UserCreateDto userDto) {
-        return new User(userDto.getLogin(), userDto.getPassword());
+        return new User(userDto.getLogin(), userDto.getPassword(), true);
     }
 
 }

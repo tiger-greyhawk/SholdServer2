@@ -1,8 +1,10 @@
 package ru.rsoft.shold.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +13,12 @@ import ru.rsoft.shold.core.dto.PatternDto;
 import ru.rsoft.shold.core.entity.Friend;
 import ru.rsoft.shold.core.entity.Pattern;
 import ru.rsoft.shold.core.entity.Player;
+import ru.rsoft.shold.core.entity.User;
 import ru.rsoft.shold.core.repository.FriendsRepository;
 import ru.rsoft.shold.core.repository.PatternRepository;
 import ru.rsoft.shold.core.repository.PlayerRepository;
 
+import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -85,7 +89,51 @@ public class PatternService {
     }
 
     public PatternDto add(PatternCreateDto patternCreateDto) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+        int playerId = playerRepository.findByNick(username).getId();
+        patternCreateDto = new PatternCreateDto(playerId, patternCreateDto.getName(), patternCreateDto.getTypeCastle(), patternCreateDto.getAccessFrom(), patternCreateDto.getComment());
+
         return convert(patternRepository.save(convert(patternCreateDto)));
+    }
+
+    public PatternDto update(int id, PatternCreateDto patternCreateDto) {
+        final Pattern patternToUpdate = patternRepository.findOne(id);
+        if (patternToUpdate == null) {
+            // надо возвращать 404, если нет такого ресурса
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+        int playerId = playerRepository.findByNick(username).getId();
+
+        if (playerId == patternToUpdate.getPlayerId())
+        {patternToUpdate.setComment(patternCreateDto.getComment());}
+
+        else
+        if (patternCreateDto.getComment().indexOf(patternToUpdate.getComment()) == -1)
+            patternToUpdate.setComment(patternToUpdate.getComment() + "\r\n -------------- \r\n" + patternCreateDto.getComment() +
+                "\r\n(added by " + username +")");  //playerRepository.findOne(patternToUpdate.getPlayerId()).getNick()
+        else patternToUpdate.setComment(patternToUpdate.getComment() + "\r\n -------------- \r\n" +
+                patternCreateDto.getComment().substring(patternToUpdate.getComment().length()) +
+                "\r\n(added by " + username +")");
+
+        return convert(patternRepository.save(patternToUpdate));
+    }
+
+    public void delete(int id) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+
+        int playerId = playerRepository.findByNick(username).getId();
+        if (playerId == patternRepository.findOne(id).getPlayerId())
+        try {
+            patternRepository.delete(id);
+        } catch (EmptyResultDataAccessException e) {
+            // надо возвращать 404, если нет такого ресурса
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        else new WebApplicationException(Response.Status.FORBIDDEN);
     }
 
     public PatternDto findById(int id) {
@@ -98,7 +146,8 @@ public class PatternService {
                 pattern.getPlayerId(),
                 pattern.getName(),
                 pattern.getTypeCastle(),
-                pattern.getAccessFrom()
+                pattern.getAccessFrom(),
+                pattern.getComment()
 //                village.getIdInWorld()
         );
     }
@@ -128,7 +177,8 @@ public class PatternService {
                 player.getId(),
                 patternCreateDto.getName(),
                 patternCreateDto.getTypeCastle(),
-                patternCreateDto.getAccessFrom()
+                patternCreateDto.getAccessFrom(),
+                patternCreateDto.getComment()
 
         );
     }

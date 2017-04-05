@@ -2,7 +2,10 @@ package ru.rsoft.shold.backend.handlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.rsoft.shold.backend.service.ResourcesService;
 import ru.rsoft.shold.core.dto.requests.ResourcesCreateDto;
 import ru.rsoft.shold.core.dto.requests.ResourcesDto;
 import ru.rsoft.shold.core.entity.Player;
@@ -24,87 +27,50 @@ import java.util.stream.Collectors;
  * Created by Admin on 24.04.2016.
  */
 @Component
+@Transactional(propagation = Propagation.REQUIRED)
 @Path("/requests/resources")
 public class ResourcesHandler {
 
-    private final PlayerRepository playerRepository;
-    private final VillageRepository villageRepository;
-    private final ResourcesRepository resourcesRepository;
+    private final ResourcesService resourcesService;
 
     @Autowired
-    public ResourcesHandler(PlayerRepository playerRepository, VillageRepository villageRepository, ResourcesRepository resourcesRepository) {
-        this.playerRepository = playerRepository;
-        this.villageRepository = villageRepository;
-        this.resourcesRepository = resourcesRepository;
+    public ResourcesHandler(ResourcesService resourcesService) {
+        this.resourcesService = resourcesService;
     }
 
     @Path("/")
     @GET
     public List<ResourcesDto> list()  {
-        return resourcesRepository.findAll().stream().map(this::convert)
-                .collect(Collectors.toList());
+        return resourcesService.getAll();
     }
 
     @Path("/new/{current_timestamp}")
     @GET
     public List<ResourcesDto> lastList(@PathParam("current_timestamp") long current_timestamp) {
-        final Date timestamp = new Date(current_timestamp);
-        timestamp.getTime();
-        //timestamp.setTime();
-        //@Query(nativeQuery = true, value = "select startDate from TaskMetrics where startDate between :startDate and :endDate")
-        return resourcesRepository.findByTimestampAfter(timestamp, new Date()).stream().map(this::convert)
-                .collect(Collectors.toList());
+        return resourcesService.lastList(current_timestamp);
     }
 
     @Path("/{id}")
     @GET
     public ResourcesDto get(@PathParam("id") int id) {
-        return convert(requireNotNull(resourcesRepository.findOne(id)));
+        return resourcesService.getOne(id);
     }
 
     @Path("/")
     @POST
     public ResourcesDto add(@RequestBody ResourcesCreateDto resourcesCreateDto) {
-        return convert(resourcesRepository.save(convert(resourcesCreateDto)));
+        return resourcesService.add(resourcesCreateDto);
     }
 
-    private <T> T requireNotNull(T object) {
-        if (object == null) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        return object;
+    @Path("/{id}")
+    @PUT
+    public ResourcesDto update(@PathParam("id") int id, @RequestBody ResourcesCreateDto resourcesCreateDto){
+        return resourcesService.update(id, resourcesCreateDto);
     }
-
-    private ResourcesDto convert(Resources resources) {
-        return new ResourcesDto(
-                resources.getId(),
-                resources.getType(),
-                resources.getName(),
-                resources.getVillageId(),
-                resources.getAmount(),
-                resources.getMaxQuantity(),
-                resources.getPlayerId(),
-//                village.getBody() == null ? null : village.getBody().getId(),
-                resources.getTimestamp(),
-                new Date()
-        );
-    }
-
-
-    private Resources convert(ResourcesCreateDto resourcesCreateDto) {
-        final Player player = requireNotNull(playerRepository.findOne(resourcesCreateDto.getPlayerId()));
-        final Village village = requireNotNull(villageRepository.findOne(resourcesCreateDto.getVillageId()));
-
-        return new Resources(
-                resourcesCreateDto.getType(),
-                resourcesCreateDto.getName(),
-                village.getId(),
-                resourcesCreateDto.getAmount(),
-                resourcesCreateDto.getMax_quantum(),
-                player.getId(),
-                resourcesCreateDto.getTimestamp()
-
-        );
-    }
+/* TODO
+Сделать Entity "посылок по почте" на запросы ресурсов и Entity "статистики". Выдавать пользователю разницу между запрошенным кол-вом и посланным кол-вом.
+Когда кол-во сравняется, или станет меньше нуля, удалять запрос и посылки из базы, и добавлять в Entity статистики.
+ */
 }
+
 
